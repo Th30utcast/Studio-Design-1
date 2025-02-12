@@ -1,14 +1,14 @@
 # **Sprints Plan**
 
 ## **Sprint 1: Requirements & Initial Design**
-- [ ] Define **Functional and Non-Functional Requirements**
-- [ ] Create the **Use Case Diagram**
+- [X] Define **Functional and Non-Functional Requirements**
+- [X] Create the **Use Case Diagram**
 - [ ] Develop the **UML Class Diagram**
 - [ ] Start the **State Diagram**
 
 ## **Sprint 2: Advanced Modeling**
-- [ ] Finalize the **UML State Diagram**
-- [ ] Create the **Sequence Diagram**
+- [X] Finalize the **UML State Diagram**
+- [X] Create the **Sequence Diagram**
 
 ## **Sprint 3: Development & Implementation**
 - [ ] Begin coding the **application/website**
@@ -23,5 +23,5 @@
 |--------------|----------------------|
 | **Anastasious** | TBD |
 | **Sharifa**    | TBD |
-| **Saeed**      | TBD |
+| **Saeed**      | Sequence Diagram |
 | **Ayman**      | Use Case Diagram |
