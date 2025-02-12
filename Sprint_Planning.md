@@ -13,10 +13,10 @@
 ## **Sprint 3: Development & Implementation**
 - [ ] Begin coding the **application/website**
 - [ ] Implement diagrams as structured tables for:
-  - **Component Diagram**
-  - **State Diagram**
-  - **Sequence Diagram**
-  - **Use Case Diagram**
+  - [X] **Component Diagram**
+  - [ ] **State Diagram**
+  - [X] **Sequence Diagram**
+  - [ ] **Use Case Diagram**
 
 ## **Task Assignments for Sprint 3**
 | Team Member   | Responsibility         |
