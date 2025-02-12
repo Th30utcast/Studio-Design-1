@@ -3,8 +3,8 @@
 ## **Sprint 1: Requirements & Initial Design**
 - [X] Define **Functional and Non-Functional Requirements**
 - [X] Create the **Use Case Diagram**
-- [ ] Develop the **UML Class Diagram**
-- [ ] Start the **State Diagram**
+- [ ] Develop the **UML Class Diagram** // now in backlog
+- [ ] Start the **State Diagram** // now in backlog
 
 ## **Sprint 2: Advanced Modeling**
 - [X] Finalize the **UML State Diagram**
