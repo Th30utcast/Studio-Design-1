@@ -21,7 +21,7 @@
 ## **Task Assignments for Sprint 3**
 | Team Member   | Responsibility         |
 |--------------|----------------------|
-| **Anastasious** | TBD |
-| **Sharifa**    | TBD |
+| **Anastasious** | Component |
+| **Sharifa**    | State |
 | **Saeed**      | Sequence Diagram |
 | **Ayman**      | Use Case Diagram |
