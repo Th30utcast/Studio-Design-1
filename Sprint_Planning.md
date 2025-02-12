@@ -18,7 +18,7 @@
   - **Sequence Diagram**
   - **Use Case Diagram**
 
-## **Task Assignments**
+## **Task Assignments for Sprint 3**
 | Team Member   | Responsibility         |
 |--------------|----------------------|
 | **Anastasious** | TBD |
