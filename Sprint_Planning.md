@@ -26,7 +26,7 @@
 | **Saeed**      | Sequence Diagram |
 | **Ayman**      | Use Case Diagram |
 
-## **Sprint 4: Technical Assingments
+## **Sprint 4: Technical Assingments**
 - [ ] Set up our enviroment on github.
 - [ ] Set up our Front page.
 - [ ] Set up our SQL Database.
