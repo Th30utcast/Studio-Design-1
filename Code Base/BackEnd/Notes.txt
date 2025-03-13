@@ -1,0 +1,1 @@
+I tried to use postgreesql and django, but it looks like mongodb would be the best option for now
