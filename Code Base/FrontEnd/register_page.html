@@ -25,7 +25,7 @@
       border-radius: 12px;
       box-shadow: 0 8px 15px rgba(0,0,0,0.3);
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       text-align: center;
     }
 
@@ -54,7 +54,8 @@
       margin-bottom: 6px;
     }
 
-    .form-group input {
+    .form-group input,
+    .form-group select {
       width: 100%;
       padding: 11px;
       border-radius: 6px;
@@ -89,6 +90,10 @@
     a:hover {
       text-decoration: underline;
     }
+
+    #membership-group, #verification-group {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -99,37 +104,60 @@
 
       <div class="form-group">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" required />
+        <input type="text" id="firstName" name="firstName" required />
       </div>
 
       <div class="form-group">
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" required />
+        <input type="text" id="lastName" name="lastName" required />
       </div>
 
       <div class="form-group">
         <label for="phoneNumber">Phone Number:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" />
+        <input type="text" id="phoneNumber" name="phoneNumber" />
       </div>
 
       <div class="form-group">
         <label for="address">Address:</label>
-        <input type="text" id="address" name="address" placeholder="Enter your address" required />
+        <input type="text" id="address" name="address" required />
       </div>
 
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" required />
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="userType">User Type:</label>
+        <select id="userType" name="userType" required onchange="handleUserTypeChange()">
+          <option value="">Select</option>
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="membership-group">
+        <label for="membership">Membership Type (Buyers only):</label>
+        <select id="membership" name="membership">
+          <option value="">Select</option>
+          <option value="gold">Gold (Unlimited Listings)</option>
+          <option value="silver">Silver (3 Listings)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="verification-group">
+        <label for="verificationId">Upload ID for Verification:</label>
+        <input type="file" id="verificationId" name="verificationId" />
       </div>
 
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+        <input type="password" id="password" name="password" required />
       </div>
 
       <div class="form-group">
         <label for="confirm-password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required />
+        <input type="password" id="confirm-password" name="confirm-password" required />
       </div>
 
       <button type="submit">Register</button>
@@ -138,6 +166,12 @@
   </div>
 
   <script>
+    function handleUserTypeChange() {
+      const userType = document.getElementById('userType').value;
+      document.getElementById('membership-group').style.display = userType === 'buyer' ? 'block' : 'none';
+      document.getElementById('verification-group').style.display = userType !== '' ? 'block' : 'none';
+    }
+
     document.getElementById('register-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -155,7 +189,9 @@
         phoneNumber: document.getElementById('phoneNumber').value,
         address: document.getElementById('address').value,
         email: document.getElementById('email').value,
-        password: password
+        password,
+        userType: document.getElementById('userType').value,
+        membership: document.getElementById('membership').value || null
       };
 
       try {

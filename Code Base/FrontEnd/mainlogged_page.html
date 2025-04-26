@@ -130,40 +130,65 @@
     </nav>
   </header>
 
+
   <section class="hero">
     <h1>Find Your Dream Home with HomeQuest</h1>
-    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <div style="display: flex; gap: 20px; color: white; background-color: rgba(12, 30, 61, 0.7); padding: 10px 20px; border-radius: 8px;">
-          <label>
-            <input type="radio" name="searchType" value="buy" checked> Buy
-          </label>
-          <label>
-            <input type="radio" name="searchType" value="rent"> Rent
-          </label>
-        </div>
-        <input class="search-bar" type="text" placeholder="Search by location, price, or type...">
+
+    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 700px; margin: 0 auto;">
+      <input class="search-bar" type="text" id="searchText" placeholder="Search by location, price, or type..." style="flex: 1;">
+      <button id="filterToggleBtn" onclick="toggleFilters()" style="padding: 10px 16px; font-size: 16px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;">
+        &#9881; Filters
+      </button>
+    </div>
+
+    <div id="filterOptions" style="display: none; max-width: 700px; margin: 20px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
+      <div style="display: flex; justify-content: center; gap: 20px;">
+        <label><input type="radio" name="listingType" value="buy" checked> Buy</label>
+        <label><input type="radio" name="listingType" value="rent"> Rent</label>
       </div>
-      
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" id="filterLocation" placeholder="Location" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+        <input type="number" id="minPrice" placeholder="Min Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+        <input type="number" id="maxPrice" placeholder="Max Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      </div>
+
+      <select id="rooms" style="padding: 10px; border-radius: 6px; border: none;">
+        <option value="">Number of Rooms</option>
+        <option value="1">1+</option>
+        <option value="2">2+</option>
+        <option value="3">3+</option>
+        <option value="4">4+</option>
+      </select>
+
+      <label style="color: white;">
+        <input type="checkbox" id="verified"> Verified Properties Only
+      </label>
+
+      <button onclick="applyFilters()" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+        Search
+      </button>
+    </div>
   </section>
 
   <section class="section" id="listings">
     <h2>Featured Listings</h2>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <table>
       <thead>
-        <tr style="background-color: #0C1E3D; color: white;">
-          <th style="padding: 12px; border: 1px solid #ccc;">Property</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">Location</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">Price</th>
-          <th style="padding: 12px; border: 1px solid #ccc;">Details</th>
+        <tr>
+          <th>Property</th>
+          <th>Location</th>
+          <th>Price</th>
+          <th>Details</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Database team can populate rows here -->
+        
         <tr>
-          <td style="padding: 10px; border: 1px solid #ccc;"></td>
-          <td style="padding: 10px; border: 1px solid #ccc;"></td>
-          <td style="padding: 10px; border: 1px solid #ccc;"></td>
-          <td style="padding: 10px; border: 1px solid #ccc;"></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
@@ -177,5 +202,33 @@
   <footer id="contact">
     <p>&copy; 2025 HomeQuest. All rights reserved.</p>
   </footer>
+
+  <script>
+    function toggleFilters() {
+      const filterSection = document.getElementById('filterOptions');
+      const toggleBtn = document.getElementById('filterToggleBtn');
+      const isVisible = filterSection.style.display === 'flex';
+      filterSection.style.display = isVisible ? 'none' : 'flex';
+      toggleBtn.innerHTML = isVisible ? 'Filters' : 'Hide Filters';
+    }
+
+    function applyFilters() {
+      const searchText = document.getElementById('searchText').value;
+      const location = document.getElementById('filterLocation').value;
+      const minPrice = document.getElementById('minPrice').value;
+      const maxPrice = document.getElementById('maxPrice').value;
+      const rooms = document.getElementById('rooms').value;
+      const listingType = document.querySelector('input[name="listingType"]:checked')?.value;
+      const verified = document.getElementById('verified').checked;
+
+      console.log("Search Text:", searchText);
+      console.log("Location:", location);
+      console.log("Price Range:", minPrice, '-', maxPrice);
+      console.log("Rooms:", rooms);
+      console.log("Listing Type:", listingType);
+      console.log("Verified:", verified);
+
+    }
+  </script>
 </body>
 </html>

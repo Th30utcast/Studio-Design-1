@@ -49,6 +49,17 @@
     h2 {
       font-size: 28px;
       margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .verified-badge {
+      background-color: #28a745;
+      color: white;
+      font-size: 14px;
+      padding: 4px 10px;
+      border-radius: 6px;
     }
 
     .account-details label {
@@ -57,7 +68,8 @@
       font-weight: 500;
     }
 
-    .account-details input {
+    .account-details input,
+    .account-details select {
       width: 100%;
       padding: 10px;
       border-radius: 6px;
@@ -80,6 +92,25 @@
     .account-details button:hover {
       background-color: #2f5ec1;
     }
+
+    .info-box {
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      border: 1px solid #ddd;
+    }
+
+    .info-box p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .section-title {
+      font-weight: 600;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
   </style>
 </head>
 <body>
@@ -92,8 +123,12 @@
   </header>
 
   <div class="account-container">
-    <h2>My Account</h2>
+    <h2>My Account <span class="verified-badge">Verified</span></h2>
+
     <form class="account-details">
+      <label for="photo">Profile Photo</label>
+      <input type="file" id="photo" name="photo">
+
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" placeholder="John Doe">
 
@@ -108,6 +143,20 @@
 
       <button type="submit">Update Information</button>
     </form>
+
+    <div class="info-box">
+      <p class="section-title">Membership Information</p>
+      <p><strong>Membership Level:</strong> Gold</p>
+      <p><strong>Listing Limit:</strong> Unlimited Listings</p>
+      <button>Upgrade Membership</button>
+    </div>
+
+    <div class="info-box">
+      <p class="section-title">Identity Verification</p>
+      <label for="id-upload">Submit ID for Verification</label>
+      <input type="file" id="id-upload" name="id-upload">
+      <button style="margin-top: 10px;">Submit ID</button>
+    </div>
   </div>
 </body>
 </html>
