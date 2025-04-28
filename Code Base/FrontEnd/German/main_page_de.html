@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HomeQuest - Find Your Dream Home</title>
+  <title>HomeQuest - Finde Dein Traumhaus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    /* (CSS bleibt gleich) */
     * {
       margin: 0;
       padding: 0;
@@ -109,38 +110,47 @@
   <header>
     <div class="logo">HomeQuest</div>
     <nav>
-      <a href="main_page.html">Home</a>
-      <a href="#listings">Listings</a>
-      <a href="#about">About</a>
-      <a href="login_page.html">Login</a>
-      <a href="#contact">Help</a>
+      <a href="main_page.html">Startseite</a>
+      <a href="#listings">Angebote</a>
+      <a href="#about">Über uns</a>
+      <a href="login_page_de.html">Login</a>
+      <a href="#contact">Hilfe</a>
     </nav>
+
+    <div>
+      <select id="languageSelect" onchange="changeLanguage(event)" style="margin-left: 20px; padding: 6px 10px; border-radius: 6px; font-size: 14px;">
+        <option value="en">English</option>
+        <option value="de" selected>Deutsch</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+      </select>      
+    </div>
   </header>
 
   <section class="hero">
-    <h1>Find Your Dream Home with HomeQuest</h1>
+    <h1>Finde Dein Traumhaus mit HomeQuest</h1>
 
     <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 700px; margin: 0 auto;">
-      <input class="search-bar" type="text" id="searchText" placeholder="Search by location, price, or type..." style="flex: 1;">
+      <input class="search-bar" type="text" id="searchText" placeholder="Suche nach Ort, Preis oder Typ..." style="flex: 1;">
       <button id="filterToggleBtn" onclick="toggleFilters()" style="padding: 10px 16px; font-size: 16px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;">
-        &#9881; Filters
+        &#9881; Filter
       </button>
     </div>
 
-    <div id="filterOptions" style="display: none; max-width: 700px; margin: 20px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
+    <div id="filterOptions" style="display: none; max-width: 700px; margin: 20px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; flex-direction: column; gap: 15px;">
       <div style="display: flex; justify-content: center; gap: 20px;">
-        <label><input type="radio" name="listingType" value="buy" checked> Buy</label>
-        <label><input type="radio" name="listingType" value="rent"> Rent</label>
+        <label><input type="radio" name="listingType" value="buy" checked> Kaufen</label>
+        <label><input type="radio" name="listingType" value="rent"> Mieten</label>
       </div>
 
       <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-        <input type="text" id="filterLocation" placeholder="Location" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-        <input type="number" id="minPrice" placeholder="Min Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-        <input type="number" id="maxPrice" placeholder="Max Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+        <input type="text" id="filterLocation" placeholder="Ort" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+        <input type="number" id="minPrice" placeholder="Mindestpreis (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+        <input type="number" id="maxPrice" placeholder="Höchstpreis (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
       </div>
 
       <select id="rooms" style="padding: 10px; border-radius: 6px; border: none;">
-        <option value="">Number of Rooms</option>
+        <option value="">Anzahl der Zimmer</option>
         <option value="1">1+</option>
         <option value="2">2+</option>
         <option value="3">3+</option>
@@ -148,28 +158,27 @@
       </select>
 
       <label style="color: white;">
-        <input type="checkbox" id="verified"> Verified Properties Only
+        <input type="checkbox" id="verified"> Nur verifizierte Immobilien
       </label>
 
       <button onclick="applyFilters()" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
-        Search
+        Suche starten
       </button>
     </div>
   </section>
 
   <section class="section" id="listings">
-    <h2>Featured Listings</h2>
+    <h2>Top-Angebote</h2>
     <table>
       <thead>
         <tr>
-          <th>Property</th>
-          <th>Location</th>
-          <th>Price</th>
+          <th>Immobilie</th>
+          <th>Ort</th>
+          <th>Preis</th>
           <th>Details</th>
         </tr>
       </thead>
       <tbody>
-        
         <tr>
           <td></td>
           <td></td>
@@ -181,21 +190,35 @@
   </section>
 
   <section class="section" id="about">
-    <h2>About</h2>
-    <p>Browse listings, connect with agents, and schedule viewings all in one place.</p>
+    <h2>Über uns</h2>
+    <p>Durchsuche Angebote, kontaktiere Makler und buche Besichtigungen – alles an einem Ort.</p>
   </section>
 
   <footer id="contact">
-    <p>&copy; 2025 HomeQuest. All rights reserved.</p>
+    <p>&copy; 2025 HomeQuest. Alle Rechte vorbehalten.</p>
   </footer>
 
   <script>
+    function changeLanguage(event) {
+      const lang = document.getElementById('languageSelect').value;
+
+      if (lang === "en") {
+        window.location.href = "../English/main_page.html";
+      } else if (lang === "de") {
+        window.location.href = "../German/main_page_de.html";
+      } else if (lang === "fr") {
+        window.location.href = "../French/main_page_fr.html";
+      } else if (lang === "es") {
+        window.location.href = "../Spanish/main_page_sp.html";
+      }
+    }
+
     function toggleFilters() {
       const filterSection = document.getElementById('filterOptions');
       const toggleBtn = document.getElementById('filterToggleBtn');
       const isVisible = filterSection.style.display === 'flex';
       filterSection.style.display = isVisible ? 'none' : 'flex';
-      toggleBtn.innerHTML = isVisible ? 'Filters' : 'Hide Filters';
+      toggleBtn.innerHTML = isVisible ? '&#9881; Filter' : 'Filter ausblenden';
     }
 
     function applyFilters() {
@@ -207,13 +230,12 @@
       const listingType = document.querySelector('input[name="listingType"]:checked')?.value;
       const verified = document.getElementById('verified').checked;
 
-      console.log("Search Text:", searchText);
-      console.log("Location:", location);
-      console.log("Price Range:", minPrice, '-', maxPrice);
-      console.log("Rooms:", rooms);
-      console.log("Listing Type:", listingType);
-      console.log("Verified:", verified);
-
+      console.log("Suchtext:", searchText);
+      console.log("Ort:", location);
+      console.log("Preisbereich:", minPrice, '-', maxPrice);
+      console.log("Zimmer:", rooms);
+      console.log("Angebotsart:", listingType);
+      console.log("Verifiziert:", verified);
     }
   </script>
 </body>

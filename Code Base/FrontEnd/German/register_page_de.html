@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HomeQuest - Registrieren</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Dein CSS bleibt gleich */
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0C1E3D;
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .register-container {
+      background-color: #162c52;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 44px;
+      font-family: 'Great Vibes', cursive;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    #register-form h2 {
+      font-size: 28px;
+      margin-bottom: 25px;
+      font-family: 'Times New Roman', Times, serif;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 11px;
+      border-radius: 6px;
+      border: none;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 17px;
+      background-color: #3a6ee8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #335dc1;
+    }
+
+    a {
+      color: #8fb6ff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #membership-group, #verification-group {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <h1 class="logo">HomeQuest</h1>
+    <form id="register-form">
+      <h2>Registrieren</h2>
+
+      <div class="form-group">
+        <label for="firstName">Vorname:</label>
+        <input type="text" id="firstName" name="firstName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Nachname:</label>
+        <input type="text" id="lastName" name="lastName" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNumber">Telefonnummer:</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Adresse:</label>
+        <input type="text" id="address" name="address" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-Mail:</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="userType">Benutzertyp:</label>
+        <select id="userType" name="userType" required onchange="handleUserTypeChange()">
+          <option value="">Auswählen</option>
+          <option value="buyer">Käufer</option>
+          <option value="seller">Verkäufer</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="membership-group">
+        <label for="membership">Mitgliedschaftstyp (nur für Käufer):</label>
+        <select id="membership" name="membership">
+          <option value="">Auswählen</option>
+          <option value="gold">Gold (Unbegrenzte Inserate)</option>
+          <option value="silver">Silber (3 Inserate)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="verification-group">
+        <label for="verificationId">Ausweis zur Verifizierung hochladen:</label>
+        <input type="file" id="verificationId" name="verificationId" />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Passwort:</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Passwort bestätigen:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required />
+      </div>
+
+      <button type="submit">Registrieren</button>
+      <p>Bereits ein Konto? <a href="login_page_de.html">Anmelden</a></p>
+    </form>
+  </div>
+
+  <script>
+    function handleUserTypeChange() {
+      const userType = document.getElementById('userType').value;
+      document.getElementById('membership-group').style.display = userType === 'buyer' ? 'block' : 'none';
+      document.getElementById('verification-group').style.display = userType !== '' ? 'block' : 'none';
+    }
+
+    document.getElementById('register-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (password !== confirmPassword) {
+        alert("Passwörter stimmen nicht überein.");
+        return;
+      }
+
+      const data = {
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        phoneNumber: document.getElementById('phoneNumber').value,
+        address: document.getElementById('address').value,
+        email: document.getElementById('email').value,
+        password,
+        userType: document.getElementById('userType').value,
+        membership: document.getElementById('membership').value || null
+      };
+
+      try {
+        const response = await fetch('http://localhost:3000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const message = await response.text();
+
+        if (response.ok) {
+          alert("Erfolgreich registriert!");
+          window.location.href = "main_page.html";
+        } else {
+          alert(message);
+        }
+
+      } catch (error) {
+        console.error("Fehler:", error);
+        alert("Registrierung fehlgeschlagen.");
+      }
+    });
+  </script>
+</body>
+</html>
