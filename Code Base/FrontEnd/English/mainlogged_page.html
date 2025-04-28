@@ -116,6 +116,46 @@
       text-align: center;
       padding: 20px;
     }
+    
+    /* Necessary property card styles for functionality */
+    .property-card {
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .property-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .property-info {
+      padding: 15px;
+    }
+    
+    .property-price {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin: 10px 0;
+    }
+    
+    .property-details {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    
+    .search-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
   </style>
 </head>
 <body>
@@ -127,16 +167,6 @@
       <a href="#about">About</a>
       <a href="account_page.html">Account</a>
       <a href="#contact">Help</a>
-
-
-
-      <select id="languageSelect" onchange="changeLanguage()" style="margin-left: 20px; padding: 6px 10px; border-radius: 6px; font-size: 14px;">
-        <option value="en">English</option>
-        <option value="de">Deutsch</option>
-        <option value="fr">Français</option>
-        <option value="es">Español</option>
-      </select>
-      
     </nav>
   </header>
 
@@ -175,7 +205,7 @@
         <input type="checkbox" id="verified"> Verified Properties Only
       </label>
 
-      <button onclick="applyFilters()" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+      <button id="searchButton" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
         Search
       </button>
     </div>
@@ -183,25 +213,9 @@
 
   <section class="section" id="listings">
     <h2>Featured Listings</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Property</th>
-          <th>Location</th>
-          <th>Price</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="search-results" id="searchResults">
+      <!-- Results will be populated here by JavaScript -->
+    </div>
   </section>
 
   <section class="section" id="about">
@@ -214,47 +228,106 @@
   </footer>
 
   <script>
-    function changeLanguage(event) {
-      const lang = document.getElementById('languageSelect').value;
-
-      if (lang === "en") {
-        window.location.href = "../English/mainlogged_page.html";
-      } else if (lang === "de") {
-        window.location.href = "../German/mainlogged_page_de.html";
-      } else if (lang === "fr") {
-        window.location.href = "../French/mainlogged_page_fr.html";
-      } else if (lang === "es") {
-        window.location.href = "../Spanish/mainlogged_page_sp.html";
-      }
-    }
-
     function toggleFilters() {
       const filterSection = document.getElementById('filterOptions');
       const toggleBtn = document.getElementById('filterToggleBtn');
       const isVisible = filterSection.style.display === 'flex';
       filterSection.style.display = isVisible ? 'none' : 'flex';
-      toggleBtn.innerHTML = isVisible ? 'Filters' : 'Hide Filters';
+      toggleBtn.innerHTML = isVisible ? '&#9881; Filters' : '&#9881; Hide Filters';
     }
 
-    function applyFilters() {
-      const searchText = document.getElementById('searchText').value;
-      const location = document.getElementById('filterLocation').value;
-      const minPrice = document.getElementById('minPrice').value;
-      const maxPrice = document.getElementById('maxPrice').value;
-      const rooms = document.getElementById('rooms').value;
-      const listingType = document.querySelector('input[name="listingType"]:checked')?.value;
-      const verified = document.getElementById('verified').checked;
-
-      console.log("Search Text:", searchText);
-      console.log("Location:", location);
-      console.log("Price Range:", minPrice, '-', maxPrice);
-      console.log("Rooms:", rooms);
-      console.log("Listing Type:", listingType);
-      console.log("Verified:", verified);
-
-    }
-
-
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get search elements
+      const searchButton = document.getElementById('searchButton');
+      const searchText = document.getElementById('searchText');
+      const filterLocation = document.getElementById('filterLocation');
+      const minPrice = document.getElementById('minPrice');
+      const maxPrice = document.getElementById('maxPrice');
+      const rooms = document.getElementById('rooms');
+      const verified = document.getElementById('verified');
+      const resultsContainer = document.getElementById('searchResults');
+      
+      // Function to fetch and display listings
+      async function fetchListings(filters = {}) {
+        try {
+          // Build query string from filters
+          const params = new URLSearchParams();
+          if (filters.location) params.append('location', filters.location);
+          if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
+          if (filters.minPrice) params.append('minPrice', filters.minPrice);
+          if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
+          
+          console.log("Fetching with params:", params.toString());
+          
+          const response = await fetch(`/api/listings?${params.toString()}`);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const listings = await response.json();
+          console.log("Received listings:", listings);
+          
+          // Clear previous results
+          resultsContainer.innerHTML = '';
+          
+          // Display each listing
+          listings.forEach(listing => {
+            const listingCard = document.createElement('div');
+            listingCard.className = 'property-card';
+            
+            listingCard.innerHTML = `
+              <img src="${listing.Photos[0] || 'https://via.placeholder.com/400x300?text=Property+Image'}" 
+                   alt="${listing.Location}" class="property-image">
+              <div class="property-info">
+                <h3>${listing.Location}</h3>
+                <div class="property-price">€${listing.Price?.toLocaleString() || 'Price on request'}</div>
+                <div class="property-details">${listing.Bedrooms || 'N/A'} beds | ${listing.Bathrooms || 'N/A'} baths</div>
+                <p>${listing.Description || 'No description available'}</p>
+              </div>
+            `;
+            
+            resultsContainer.appendChild(listingCard);
+          });
+          
+          if (listings.length === 0) {
+            resultsContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center;">No properties found matching your criteria.</p>';
+          }
+        } catch (error) {
+          console.error('Error fetching listings:', error);
+          resultsContainer.innerHTML = `
+            <p style="grid-column:1/-1;text-align:center;color:red;">
+              Error loading properties: ${error.message}
+            </p>
+          `;
+        }
+      }
+      
+      // Initial load - show all listings
+      fetchListings();
+      
+      // Search button click handler
+      searchButton.addEventListener('click', function() {
+        const filters = {
+          location: filterLocation.value.trim() || searchText.value.trim(),
+          bedrooms: rooms.value,
+          minPrice: minPrice.value,
+          maxPrice: maxPrice.value
+        };
+        
+        fetchListings(filters);
+      });
+      
+      // Main search bar handler
+      searchText.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          const filters = {
+            location: this.value.trim()
+          };
+          fetchListings(filters);
+        }
+      });
+    });
   </script>
 </body>
 </html>
