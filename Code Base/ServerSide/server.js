@@ -1,46 +1,39 @@
-require("dotenv").config();
-const express = require("express");
-const { Pool } = require("pg");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const authRoutes = require('./routes/auth');
+const listingRoutes = require('./routes/listings'); 
+const path = require('path');
 
+dotenv.config();
 const app = express();
-app.use(bodyParser.json());
-app.use(cors());
+const PORT = 3000;
 
-const pool = new Pool({
-    user: "postgres",
-    host: "localhost",
-    database: "homequest",
-    password: "yourpassword",  // Replace with your actual password
-    port: 5432,
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public')); // Serve static files
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/homequest', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log("MongoDB connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/listings', listingRoutes); // 👈 NEW: Mount listings routes
+
+// Add this temporarily in server.js after connection
+mongoose.connection.on('connected', () => {
+  console.log('Connected to collection:', mongoose.connection.collections.listings?.collectionName);
+  mongoose.connection.db.collection('listings').find({}).toArray()
+  .then(docs => console.log(`Found ${docs.length} listings`))
+  .catch(err => console.error("Query failed:", err)); // Debugging 
 });
 
-// 📝 Test route to check if the server is running
-app.get("/", (req, res) => {
-    res.send("Hello World! Node.js & PostgreSQL are working!");
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
-
-// 📝 API to Insert a String into the Database
-app.post("/submit", async (req, res) => {
-    const { inputString } = req.body;
-    try {
-        await pool.query("INSERT INTO test_strings (content) VALUES ($1)", [inputString]);
-        res.send("String has been stored!");
-    } catch (err) {
-        res.status(500).send("Error: " + err.message);
-    }
-});
-
-// 📝 API to Retrieve Stored Strings
-app.get("/strings", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT * FROM test_strings");
-        res.json(result.rows);
-    } catch (err) {
-        res.status(500).send("Error: " + err.message);
-    }
-});
-
-// Start the Server
-app.listen(5000, () => console.log("Server running on port 5000"));
