@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
   userType: { type: String, enum: ['buyer', 'seller'], required: true }, // ✅ Key line
   membership: { type: String, enum: ['silver', 'gold'], default: 'silver' },
   isVerified: { type: Boolean, default: false },
-  photo: { type: String, default: "" },
+  photo: { type: String, default: "/uploads/default-profile.png" },
+  dataConsent: { type: Boolean, default: false },
   loginAttempts: [{ date: { type: Date, default: Date.now } }]
 }, { collection: 'users' });
 

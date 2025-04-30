@@ -24,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/homequest',
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/listings', listingRoutes); // 👈 NEW: Mount listings routes
+app.use('/uploads', express.static('public/uploads'));
 
 // Add this temporarily in server.js after connection
 mongoose.connection.on('connected', () => {

@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const multer = require('multer');
+const path = require('path');
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
-// Set up multer for profile picture or document uploads
+// Multer storage setup
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/uploads/');
@@ -13,7 +14,8 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
-const upload = multer({ storage: storage });
+
+const upload = multer({ storage });
 
 // ========================= REGISTER =========================
 router.post('/register', async (req, res) => {
@@ -25,7 +27,8 @@ router.post('/register', async (req, res) => {
     phoneNumber,
     address,
     userType,
-    membership
+    membership,
+    dataConsent
   } = req.body;
 
   try {
@@ -48,7 +51,8 @@ router.post('/register', async (req, res) => {
       phoneNumber,
       address,
       userType,
-      membership: userType === 'seller' ? (membership || 'silver') : undefined
+      membership: userType === 'seller' ? (membership || 'silver') : undefined,
+      dataConsent: dataConsent === 'true' || dataConsent === true
     });
 
     await newUser.save();
@@ -97,20 +101,22 @@ router.get('/account', async (req, res) => {
     const { email } = req.query;
     const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(404).send("User not found.");
-    }
+    if (!user) return res.status(404).send("User not found.");
 
     res.status(200).json({
       membership: user.membership || "Standard",
       photo: user.photo || "",
-      isVerified: user.isVerified || false
+      isVerified: user.isVerified || false,
+      phoneNumber: user.phoneNumber || "",
+      address: user.address || "",
+      dataConsent: user.dataConsent === true
     });
   } catch (err) {
     console.error("Account fetch error:", err);
     res.status(500).send("Server error.");
   }
 });
+
 
 // ========================= UPLOAD ID FOR VERIFICATION =========================
 router.post('/upload-id', upload.single('idDocument'), async (req, res) => {
@@ -141,29 +147,36 @@ router.post('/upgrade-membership', async (req, res) => {
     res.status(500).send("Server error.");
   }
 });
-
 // ========================= UPDATE USER INFO =========================
 router.post('/update-info', upload.single('profilePicture'), async (req, res) => {
   try {
-    const { email, phoneNumber, address } = req.body;
+    const { email, phoneNumber, address, dataConsent } = req.body;
 
-    if (!email) return res.status(400).send("Missing email.");
+    if (!email) {
+      return res.status(400).send("Missing email.");
+    }
 
-    const updateFields = {
-      phoneNumber,
-      address
-    };
+    const updateFields = {};
 
+    if (phoneNumber !== undefined) updateFields.phoneNumber = phoneNumber;
+    if (address !== undefined) updateFields.address = address;
+    if (dataConsent !== undefined) {
+      updateFields.dataConsent = dataConsent === 'true' || dataConsent === true;
+    }
     if (req.file) {
       updateFields.photo = `/uploads/${req.file.filename}`;
     }
 
-    await User.updateOne({ email }, { $set: updateFields });
+    const result = await User.updateOne({ email }, { $set: updateFields });
 
-    res.status(200).send("User information updated successfully.");
+    if (result.modifiedCount === 0) {
+      return res.status(404).send("No user updated. Check email.");
+    }
+
+    res.status(200).send("Updated successfully.");
   } catch (err) {
     console.error("Update info error:", err);
-    res.status(500).send("Server error.");
+    res.status(500).send("Server error while updating info.");
   }
 });
 
