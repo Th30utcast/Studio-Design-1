@@ -26,7 +26,19 @@ document.addEventListener("DOMContentLoaded", async () => {
           statusText.textContent = "❌ Your account is not verified.";
           verificationForm.style.display = "block";
         }
-  
+    
+        if (data.membership) {
+          const membershipInput = document.getElementById("membership");
+          const subscriptionBox = document.getElementById("subscriptionInfo");
+        
+          if (membershipInput && subscriptionBox) {
+            membershipInput.value = data.membership;
+            if (localStorage.getItem("userType") === "seller") {
+              subscriptionBox.style.display = "block";
+            }
+          }
+        }
+        
         if (data.photo) {
           document.getElementById("profilePreview").src = data.photo;
           localStorage.setItem("photo", data.photo);
@@ -151,4 +163,3 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     });
   });
-  

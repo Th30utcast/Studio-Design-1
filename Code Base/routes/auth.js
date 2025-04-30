@@ -104,7 +104,7 @@ router.get('/account', async (req, res) => {
     if (!user) return res.status(404).send("User not found.");
 
     res.status(200).json({
-      membership: user.membership || "Standard",
+      membership: user.membership || "silver",
       photo: user.photo || "",
       isVerified: user.isVerified || false,
       phoneNumber: user.phoneNumber || "",
