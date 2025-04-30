@@ -12,5 +12,6 @@ const userSchema = new mongoose.Schema({
   profilePhoto: { type: String, default: "" },
   loginAttempts: [{ date: { type: Date, default: Date.now } }]
 }, { collection: 'users' });
+// hello
 
 module.exports = mongoose.model("User", userSchema);
