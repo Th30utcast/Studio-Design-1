@@ -203,6 +203,31 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 8px 16px;
+      background-color: #f5f5f5;
+      color: #0C1E3D;
+      text-decoration: none;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #e0e0e0;
+    }
+
+    /* Property Examples for Demo */
+    .property-select {
+      margin-bottom: 20px;
+    }
+    
+    .property-select select {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -218,17 +243,28 @@
   </header>
 
   <div class="container">
+    <a href="javascript:history.back()" class="back-button">← Back to Listing</a>
+    
     <div class="property-info">
-      <h3 id="propertyLocation">Loading property...</h3>
-      <div class="property-price" id="propertyPrice"></div>
-      <div class="property-details" id="propertyDetails"></div>
+      <h3 id="propertyLocation">123 Main Street, San Francisco, CA</h3>
+      <div class="property-price" id="propertyPrice">$1,250,000</div>
+      <div class="property-details" id="propertyDetails">3 Bedrooms | 2 Bathrooms | 1,850 sq ft</div>
+    </div>
+
+    <div class="property-select">
+      <label for="propertyDemo">For demo purposes, select a property:</label>
+      <select id="propertyDemo">
+        <option value="property1">123 Main Street, San Francisco, CA</option>
+        <option value="property2">456 Park Avenue, New York, NY</option>
+        <option value="property3">789 Beach Drive, Miami, FL</option>
+      </select>
     </div>
 
     <div class="form-card">
       <h1>Contact Property Agent</h1>
       
       <form id="contactForm">
-        <input type="hidden" id="listingId" name="listingId">
+        <input type="hidden" id="listingId" name="listingId" value="property1">
         
         <div class="form-group">
           <label for="fullName" class="required">Full Name</label>
@@ -263,21 +299,51 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Get listing ID from URL
+      // Demo properties data (simulating backend)
+      const properties = {
+        property1: {
+          location: "123 Main Street, San Francisco, CA",
+          price: "$1,250,000",
+          details: "3 Bedrooms | 2 Bathrooms | 1,850 sq ft",
+          type: "sale"
+        },
+        property2: {
+          location: "456 Park Avenue, New York, NY",
+          price: "$3,600/month",
+          details: "1 Bedroom | 1 Bathroom | 850 sq ft",
+          type: "rent"
+        },
+        property3: {
+          location: "789 Beach Drive, Miami, FL",
+          price: "$895,000",
+          details: "2 Bedrooms | 2 Bathrooms | 1,400 sq ft",
+          type: "sale"
+        }
+      };
+
+      // Get listing ID from URL or use default
       const urlParams = new URLSearchParams(window.location.search);
-      const listingId = urlParams.get('listing');
+      const listingId = urlParams.get('listing') || 'property1';
       
       // Set the listing ID in the hidden form field
-      if (listingId) {
-        document.getElementById('listingId').value = listingId;
-        loadPropertyDetails(listingId);
-      }
+      document.getElementById('listingId').value = listingId;
+      document.getElementById('propertyDemo').value = listingId;
+      
+      // Load property details (from our demo data)
+      loadPropertyDetails(listingId);
+
+      // Property selector for demo
+      const propertySelector = document.getElementById('propertyDemo');
+      propertySelector.addEventListener('change', function() {
+        loadPropertyDetails(this.value);
+        document.getElementById('listingId').value = this.value;
+      });
 
       const contactForm = document.getElementById('contactForm');
       const submitBtn = document.getElementById('submitBtn');
       const btnText = document.getElementById('btnText');
       
-      contactForm.addEventListener('submit', async function(e) {
+      contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
         // Validate form
@@ -287,53 +353,25 @@
         submitBtn.disabled = true;
         btnText.innerHTML = '<span class="loading"></span> Sending...';
         
-        try {
-          // Prepare form data
-          const formData = new FormData(contactForm);
-          const jsonData = {};
-          formData.forEach((value, key) => { jsonData[key] = value });
-          
-          // Simulate API call (replace with actual fetch to your backend)
-          await simulateApiCall('/api/contact', jsonData);
-          
+        // Simulate API call with setTimeout
+        setTimeout(() => {
           // Show success message
           showAlert('success', 'Your message has been sent to the agent!');
           contactForm.reset();
-        } catch (error) {
-          showAlert('error', 'Failed to send message. Please try again.');
-          console.error('Error:', error);
-        } finally {
+          
+          // Reset button
           submitBtn.disabled = false;
           btnText.textContent = 'Send Message';
-        }
+        }, 1500);
       });
       
-      function loadPropertyDetails(listingId) {
-        // In a real app, you would fetch this from your API
-        // Mock data for demonstration
-        const mockListings = {
-          '123': {
-            location: 'Saudi Arabia, AL Khabar',
-            price: '$5,000,000',
-            bedrooms: 4,
-            bathrooms: 3,
-            description: 'Luxury villa with modern finishes, private pool, and sea views.'
-          },
-          '456': {
-            location: 'Kuwait, Salmiya',
-            price: '$3,200,000',
-            bedrooms: 3,
-            bathrooms: 2,
-            description: 'Modern apartment with panoramic city views.'
-          }
-        };
+      function loadPropertyDetails(propertyId) {
+        const property = properties[propertyId] || properties.property1;
         
-        const listing = mockListings[listingId] || mockListings['123'];
-        
-        document.getElementById('propertyLocation').textContent = listing.location;
-        document.getElementById('propertyPrice').textContent = listing.price;
-        document.getElementById('propertyDetails').textContent = 
-          `${listing.bedrooms} Bedrooms | ${listing.bathrooms} Bathrooms`;
+        // Update the UI with property data
+        document.getElementById('propertyLocation').textContent = property.location;
+        document.getElementById('propertyPrice').textContent = property.price;
+        document.getElementById('propertyDetails').textContent = property.details;
       }
       
       function validateForm(form) {
@@ -357,13 +395,6 @@
         }
         
         return isValid;
-      }
-      
-      function simulateApiCall(url, data) {
-        console.log('Simulating submission to:', url, data);
-        return new Promise((resolve) => {
-          setTimeout(resolve, 1500);
-        });
       }
       
       function showAlert(type, message) {
