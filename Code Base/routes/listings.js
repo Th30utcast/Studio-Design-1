@@ -17,15 +17,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// GET /api/listings - Filtered or all listings
 router.get('/', async (req, res) => {
   try {
-    const { 
-      listingType, 
-      location,
-      minPrice,
-      maxPrice,
-      bedrooms
-    } = req.query;
+    const { listingType, location, minPrice, maxPrice, bedrooms } = req.query;
 
     const filters = {};
     if (listingType) filters.listingType = listingType;
@@ -44,8 +39,18 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /api/listings/:id - Single listing details
+router.get('/:id', async (req, res) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) return res.status(404).json({ error: 'Listing not found' });
+    res.json(listing);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch listing' });
+  }
+});
 
-// POST /api/listings/add
+// POST /api/listings/add - Add a new listing
 router.post('/add', upload.array('photos', 5), async (req, res) => {
   try {
     const {
@@ -91,13 +96,11 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
     });
 
     await newListing.save();
-    res.status(201).json({ message: 'Listing added successfully.' });
+    res.status(201).json({ message: 'Listing added successfully.', listing: newListing });
   } catch (err) {
     console.error('Create listing error:', err);
     res.status(500).json({ error: 'Server error.', details: err.message });
   }
 });
-
-
 
 module.exports = router;

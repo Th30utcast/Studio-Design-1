@@ -40,29 +40,33 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   
-    function loadPropertyDetails(listingId) {
-      const mockListings = {
-        '123': {
-          location: 'Saudi Arabia, AL Khabar',
-          price: '$5,000,000',
-          bedrooms: 4,
-          bathrooms: 3,
-          description: 'Luxury villa with modern finishes, private pool, and sea views.'
-        },
-        '456': {
-          location: 'Kuwait, Salmiya',
-          price: '$3,200,000',
-          bedrooms: 3,
-          bathrooms: 2,
-          description: 'Modern apartment with panoramic city views.'
+    async function loadPropertyDetails(listingId) {
+      try {
+        const res = await fetch(`/api/listings/${listingId}`);
+        if (!res.ok) throw new Error("Listing not found");
+        const listing = await res.json();
+    
+        document.getElementById('propertyLocation').textContent = listing.location || 'Unknown';
+        document.getElementById('propertyPrice').textContent = `€${listing.price?.toLocaleString() || 'N/A'}`;
+        document.getElementById('propertyDetails').textContent = `${listing.bedrooms || '?'} Bedrooms | ${listing.bathrooms || '?'} Bathrooms`;
+    
+        if (listing.apartmentType) {
+          document.getElementById('propertyType').textContent = listing.apartmentType;
         }
-      };
-  
-      const listing = mockListings[listingId] || mockListings['123'];
-      document.getElementById('propertyLocation').textContent = listing.location;
-      document.getElementById('propertyPrice').textContent = listing.price;
-      document.getElementById('propertyDetails').textContent = `${listing.bedrooms} Bedrooms | ${listing.bathrooms} Bathrooms`;
+    
+        if (listing.description) {
+          document.getElementById('propertyDescription').textContent = listing.description;
+        }
+      } catch (err) {
+        console.error("Error loading listing:", err);
+        document.getElementById('propertyLocation').textContent = 'Listing not found.';
+        document.getElementById('propertyPrice').textContent = '';
+        document.getElementById('propertyDetails').textContent = '';
+        document.getElementById('propertyType').textContent = '';
+        document.getElementById('propertyDescription').textContent = '';
+      }
     }
+    
   
     function validateViewingForm(form) {
       let isValid = true;

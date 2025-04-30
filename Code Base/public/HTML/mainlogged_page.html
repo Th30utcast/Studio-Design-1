@@ -12,17 +12,18 @@
 <body>
   <header>
     <div class="logo" data-translate="logo">HomeQuest</div>
-    <nav>
-      <a href="mainlogged_page.html" data-translate="home">Home</a>
-      <a href="#listings" data-translate="listings">Listings</a>
-      <a href="#about" data-translate="about">About</a>
-      <a href="account_page.html" data-translate="account">Account</a>
-      <a href="#contact" data-translate="help">Help</a>
-    </nav>
-    <button id="addListingBtn" style="display: none; margin-left: 20px; padding: 10px 20px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;">
-      + Add Listing
-    </button>    
+    <div class="dropdown-container">
+      <div class="menu-toggle" id="menuToggle">&#9776;</div>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a href="mainlogged_page.html" data-translate="home">Home</a>
+        <a href="#listings" data-translate="listings">Listings</a>
+        <a href="#about" data-translate="about">About</a>
+        <a href="account_page.html" data-translate="account">Account</a>
+        <a href="#contact" data-translate="help">Help</a>
+      </div>
+    </div>
   </header>
+  
 
   <section class="hero">
     <h1 data-translate="welcome">Find Your Dream Home with HomeQuest</h1>

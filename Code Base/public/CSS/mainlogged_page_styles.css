@@ -299,3 +299,43 @@
   .btn-secondary:hover {
     background-color: #e5e5e5;
   }  
+  .dropdown-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .menu-toggle {
+    font-size: 28px;
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: transparent;
+    border: none;
+    color: white;
+  }
+  
+  .dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: rgba(12, 30, 61, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    min-width: 160px;
+    z-index: 1000;
+  }
+  
+  .dropdown-menu a {
+    color: white;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .dropdown-menu a:hover {
+    background-color: #162c52;
+  }
+  

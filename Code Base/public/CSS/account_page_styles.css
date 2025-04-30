@@ -89,4 +89,9 @@ body {
     border: 2px solid #3a6ee8;
     margin-bottom: 20px;
   }
+  .logo {
+    font-family: 'Great Vibes', cursive;
+    font-size: 36px;
+    color: white;
+  }
   
