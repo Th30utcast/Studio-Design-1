@@ -13,6 +13,9 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // Serve static files
+app.get('/', (req, res) => {
+  res.redirect('/HTML/main_page.html');
+});
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/homequest', {
