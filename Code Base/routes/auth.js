@@ -179,5 +179,19 @@ router.post('/update-info', upload.single('profilePicture'), async (req, res) =>
     res.status(500).send("Server error while updating info.");
   }
 });
+// ========================= REMOVE USER PROFILE =========================
+router.post('/remove-photo', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).send("Missing email.");
+
+    await User.updateOne({ email }, { $set: { photo: "/uploads/default-profile.png" } });
+
+    res.status(200).json({ message: "Photo reset to default." });
+  } catch (err) {
+    console.error("Remove photo error:", err);
+    res.status(500).send("Server error while removing photo.");
+  }
+});
 
 module.exports = router;
