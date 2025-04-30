@@ -321,6 +321,9 @@
       <a href="account_page.html" data-translate="account">Account</a>
       <a href="#contact" data-translate="help">Help</a>
     </nav>
+    <button id="addListingBtn" style="display: none; margin-left: 20px; padding: 10px 20px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;">
+      + Add Listing
+    </button>    
   </header>
 
   <section class="hero">
@@ -619,5 +622,18 @@
       });
     });
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const addBtn = document.getElementById("addListingBtn");
+      const userType = localStorage.getItem("userType"); // Must be stored at login
+  
+      if (userType === "seller") {
+        addBtn.style.display = "inline-block";
+        addBtn.addEventListener("click", () => {
+          window.location.href = "add_listing.html";
+        });
+      }
+    });
+  </script>  
 </body>
 </html>

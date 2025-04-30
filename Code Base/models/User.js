@@ -1,23 +1,17 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   phoneNumber: String,
   address: String,
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-
-  // New stuff you're adding:
-  membership: { type: String, default: 'Standard' }, // Standard or Gold
-  photo: { type: String, default: '' }, // Path to uploaded photo
-  isVerified: { type: Boolean, default: false }, // Verification status
-
-  loginAttempts: [
-    {
-      date: { type: Date, default: Date.now }
-    }
-  ]
-});
+  userType: { type: String, enum: ['buyer', 'seller'], required: true }, // ✅ Key line
+  membership: { type: String, enum: ['silver', 'gold'], default: 'silver' },
+  isVerified: { type: Boolean, default: false },
+  photo: { type: String, default: "" },
+  loginAttempts: [{ date: { type: Date, default: Date.now } }]
+}, { collection: 'users' });
 
 module.exports = mongoose.model('User', userSchema);

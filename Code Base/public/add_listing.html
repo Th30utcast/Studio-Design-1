@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Listing - HomeQuest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0C1E3D;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+
+    form input,
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    form textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #3a6ee8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2f5ec1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">HomeQuest</div>
+    <nav>
+      <a href="mainlogged_page.html">Dashboard</a>
+      <a href="account_page.html">Account</a>
+      <a href="main_page.html">Logout</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Add New Listing</h2>
+    <form id="listingForm" enctype="multipart/form-data">
+      <label for="listingType">Listing Type</label>
+      <select name="listingType" id="listingType" required>
+        <option value="">Select Type</option>
+        <option value="rent">Rent</option>
+        <option value="purchase">Purchase</option>
+      </select>
+
+      <label for="apartmentType">Apartment Type</label>
+      <select name="apartmentType" id="apartmentType" required>
+        <option value="">Select Type</option>
+        <option value="residential">Residential</option>
+        <option value="commercial">Commercial</option>
+      </select>
+
+      <label for="duration">Rent Duration (if applicable)</label>
+      <input type="text" name="duration" id="duration" placeholder="e.g. 6 months" />
+
+      <label for="price">Price (€)</label>
+      <input type="number" name="price" required />
+
+      <label for="size">Size</label>
+      <input type="text" name="size" placeholder="e.g. 120 sqm" />
+
+      <label for="bedrooms">Number of Bedrooms</label>
+      <input type="number" name="bedrooms" />
+
+      <label for="bathrooms">Number of Bathrooms</label>
+      <input type="number" name="bathrooms" />
+
+      <label for="location">Location</label>
+      <input type="text" name="location" required />
+
+      <label for="description">Description</label>
+      <textarea name="description" placeholder="Write a brief description..."></textarea>
+
+      <label for="photos">Upload Photos</label>
+      <input type="file" name="photos" multiple accept="image/*" />
+
+      <button type="submit">Add Listing</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('listingForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      const sellerId = localStorage.getItem("userId");
+      if (!sellerId) {
+        alert("User not logged in. Please log in first.");
+        return;
+      }
+
+      formData.append("sellerId", sellerId);
+
+      try {
+        const res = await fetch('/api/listings/add', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          alert("Listing added successfully!");
+          form.reset();
+          window.location.href = "mainlogged_page.html";
+        } else {
+          alert(result.error || "Something went wrong.");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server error.");
+      }
+    });
+  </script>
+</body>
+</html>

@@ -5,27 +5,44 @@ const User = require('../models/User');
 
 // Register Route
 router.post('/register', async (req, res) => {
-  const { fullname, username, email, password } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    phoneNumber,
+    address,
+    userType,       // 'buyer' or 'seller'
+    membership      // optional: 'gold' or 'silver'
+  } = req.body;
 
   try {
+    if (!userType || !['buyer', 'seller'].includes(userType)) {
+      return res.status(400).send("Invalid or missing user type.");
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).send("User already exists.");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const newUser = new User({
-      fullname,
-      username,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
-      loginAttempts: []
+      phoneNumber,
+      address,
+      userType,
+      membership: userType === 'seller' ? (membership || 'silver') : undefined
     });
 
     await newUser.save();
     res.status(201).send("User registered successfully.");
   } catch (err) {
-    console.error(err);
+    console.error("Registration error:", err);
     res.status(500).send("Server error.");
   }
 });
@@ -40,68 +57,70 @@ router.post('/login', async (req, res) => {
       return res.status(400).send("User not found.");
     }
 
-    // Compare password with hashed password in DB
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).send("Invalid credentials.");
     }
 
-    // Login successful, you can set session or generate a JWT token here if needed
-    res.status(200).send("Login successful.");
+    res.status(200).json({
+      message: "Login successful.",
+      userId: user._id,
+      userType: user.userType,
+      membership: user.membership || "silver"
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server error.");
+    console.error("Login error:", err);
+    res.status(500).send("Server error. Please try again later.");
   }
 });
-
-module.exports = router;
 
 // Get Account Info
 router.get('/account', async (req, res) => {
   try {
-      const { email } = req.query; // assuming you send email as query param
-      const user = await User.findOne({ email });
+    const { email } = req.query;
+    const user = await User.findOne({ email });
 
-      if (!user) {
-          return res.status(404).send("User not found.");
-      }
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
 
-      res.status(200).json({
-          membership: user.membership || "Standard",
-          photo: user.photo || "",
-          isVerified: user.isVerified || false
-      });
+    res.status(200).json({
+      membership: user.membership || "Standard",
+      photo: user.photo || "",
+      isVerified: user.isVerified || false
+    });
   } catch (err) {
-      console.error(err);
-      res.status(500).send("Server error.");
+    console.error("Account fetch error:", err);
+    res.status(500).send("Server error.");
   }
 });
 
 // Upload ID for Verification
 router.post('/upload-id', async (req, res) => {
   try {
-      const { email } = req.body;
-      // Here, assume ID was uploaded successfully (later you can add actual file upload)
+    const { email } = req.body;
 
-      await User.updateOne({ email }, { isVerified: true });
+    await User.updateOne({ email }, { isVerified: true });
 
-      res.status(200).send("ID submitted and user marked as verified.");
+    res.status(200).send("ID submitted and user marked as verified.");
   } catch (err) {
-      console.error(err);
-      res.status(500).send("Server error.");
+    console.error("ID upload error:", err);
+    res.status(500).send("Server error.");
   }
 });
 
 // Upgrade Membership
 router.post('/upgrade-membership', async (req, res) => {
   try {
-      const { email } = req.body;
+    const { email } = req.body;
 
-      await User.updateOne({ email }, { membership: "Gold" });
+    await User.updateOne({ email }, { membership: "gold" });
 
-      res.status(200).send("Membership upgraded to Gold.");
+    res.status(200).send("Membership upgraded to Gold.");
   } catch (err) {
-      console.error(err);
-      res.status(500).send("Server error.");
+    console.error("Membership upgrade error:", err);
+    res.status(500).send("Server error.");
   }
 });
+
+module.exports = router;
