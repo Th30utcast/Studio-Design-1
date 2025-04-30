@@ -245,21 +245,6 @@
   <div class="container">
     <a href="javascript:history.back()" class="back-button">← Back to Listing</a>
     
-    <div class="property-info">
-      <h3 id="propertyLocation">123 Main Street, San Francisco, CA</h3>
-      <div class="property-price" id="propertyPrice">$1,250,000</div>
-      <div class="property-details" id="propertyDetails">3 Bedrooms | 2 Bathrooms | 1,850 sq ft</div>
-    </div>
-
-    <div class="property-select">
-      <label for="propertyDemo">For demo purposes, select a property:</label>
-      <select id="propertyDemo">
-        <option value="property1">123 Main Street, San Francisco, CA</option>
-        <option value="property2">456 Park Avenue, New York, NY</option>
-        <option value="property3">789 Beach Drive, Miami, FL</option>
-      </select>
-    </div>
-
     <div class="form-card">
       <h1>Contact Property Agent</h1>
       
@@ -299,45 +284,12 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Demo properties data (simulating backend)
-      const properties = {
-        property1: {
-          location: "123 Main Street, San Francisco, CA",
-          price: "$1,250,000",
-          details: "3 Bedrooms | 2 Bathrooms | 1,850 sq ft",
-          type: "sale"
-        },
-        property2: {
-          location: "456 Park Avenue, New York, NY",
-          price: "$3,600/month",
-          details: "1 Bedroom | 1 Bathroom | 850 sq ft",
-          type: "rent"
-        },
-        property3: {
-          location: "789 Beach Drive, Miami, FL",
-          price: "$895,000",
-          details: "2 Bedrooms | 2 Bathrooms | 1,400 sq ft",
-          type: "sale"
-        }
-      };
-
       // Get listing ID from URL or use default
       const urlParams = new URLSearchParams(window.location.search);
       const listingId = urlParams.get('listing') || 'property1';
       
       // Set the listing ID in the hidden form field
       document.getElementById('listingId').value = listingId;
-      document.getElementById('propertyDemo').value = listingId;
-      
-      // Load property details (from our demo data)
-      loadPropertyDetails(listingId);
-
-      // Property selector for demo
-      const propertySelector = document.getElementById('propertyDemo');
-      propertySelector.addEventListener('change', function() {
-        loadPropertyDetails(this.value);
-        document.getElementById('listingId').value = this.value;
-      });
 
       const contactForm = document.getElementById('contactForm');
       const submitBtn = document.getElementById('submitBtn');
@@ -365,14 +317,7 @@
         }, 1500);
       });
       
-      function loadPropertyDetails(propertyId) {
-        const property = properties[propertyId] || properties.property1;
-        
-        // Update the UI with property data
-        document.getElementById('propertyLocation').textContent = property.location;
-        document.getElementById('propertyPrice').textContent = property.price;
-        document.getElementById('propertyDetails').textContent = property.details;
-      }
+      // No longer needed - static property info
       
       function validateForm(form) {
         let isValid = true;
@@ -412,3 +357,5 @@
   </script>
 </body>
 </html>
+  <script src="translations.js"></script>
+  <script src="language-switcher.js"></script>
