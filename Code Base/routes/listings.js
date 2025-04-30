@@ -17,6 +17,34 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.get('/', async (req, res) => {
+  try {
+    const { 
+      listingType, 
+      location,
+      minPrice,
+      maxPrice,
+      bedrooms
+    } = req.query;
+
+    const filters = {};
+    if (listingType) filters.listingType = listingType;
+    if (location) filters.location = new RegExp(location, 'i');
+    if (minPrice || maxPrice) {
+      filters.price = {};
+      if (minPrice) filters.price.$gte = Number(minPrice);
+      if (maxPrice) filters.price.$lte = Number(maxPrice);
+    }
+    if (bedrooms) filters.bedrooms = { $gte: Number(bedrooms) };
+
+    const listings = await Listing.find(filters);
+    res.json(listings);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch listings' });
+  }
+});
+
+
 // POST /api/listings/add
 router.post('/add', upload.array('photos', 5), async (req, res) => {
   try {
@@ -69,5 +97,7 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
     res.status(500).json({ error: 'Server error.', details: err.message });
   }
 });
+
+
 
 module.exports = router;
