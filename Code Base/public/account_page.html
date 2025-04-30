@@ -39,6 +39,7 @@
     }
     h2 {
       margin-top: 0;
+      text-align: center;
     }
     .form-group {
       margin-bottom: 15px;
@@ -48,12 +49,17 @@
       margin-bottom: 6px;
       font-weight: 500;
     }
-    .form-group input {
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group input[type="file"] {
       width: 100%;
       padding: 10px;
       font-size: 15px;
       border: 1px solid #ccc;
       border-radius: 6px;
+    }
+    .form-group input[type="checkbox"] {
+      margin-right: 10px;
     }
     button {
       background-color: #3a6ee8;
@@ -70,6 +76,14 @@
     #verification-section {
       margin-top: 40px;
     }
+    #profilePreview {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #3a6ee8;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -84,13 +98,13 @@
   <div class="container">
     <h2>Account Information</h2>
 
-    <div style="text-align: center; margin-bottom: 20px;">
-      <img id="profilePreview" src="https://via.placeholder.com/150?text=No+Photo" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid #3a6ee8;" />
+    <div style="text-align: center;">
+      <img id="profilePreview" src="/uploads/default-profile.png" alt="Profile Picture" />
     </div>
-    
+
     <div class="form-group">
       <label>Email</label>
-      <input type="text" id="email" readonly />
+      <input type="email" id="email" readonly />
     </div>
 
     <div class="form-group">
@@ -118,6 +132,13 @@
       <input type="file" id="profilePicture" name="profilePicture" accept="image/*" />
     </div>
 
+    <div class="form-group">
+      <label>
+        <input type="checkbox" id="dataConsent" />
+        I consent to the use of my data to improve location-based services.
+      </label>
+    </div>
+
     <button id="updateInfoBtn">Update Information</button>
 
     <div id="verification-section">
@@ -137,15 +158,10 @@
       const email = localStorage.getItem("email");
       const firstName = localStorage.getItem("firstName");
       const lastName = localStorage.getItem("lastName");
-      const phoneNumber = localStorage.getItem("phoneNumber") || "";
-      const address = localStorage.getItem("address") || "";
-      const membership = localStorage.getItem("membership");
 
       document.getElementById("email").value = email || "";
       document.getElementById("firstName").value = firstName || "";
       document.getElementById("lastName").value = lastName || "";
-      document.getElementById("phoneNumber").value = phoneNumber;
-      document.getElementById("address").value = address;
 
       const statusText = document.getElementById("verification-status");
       const verificationForm = document.getElementById("verificationForm");
@@ -160,36 +176,47 @@
         const data = await res.json();
 
         if (res.ok) {
-        if (data.isVerified) {
-          statusText.textContent = "✅ Your account is verified.";
-        } else {
-          statusText.textContent = "❌ Your account is not verified.";
-          verificationForm.style.display = "block";
-        }
+          if (data.isVerified) {
+            statusText.textContent = "✅ Your account is verified.";
+          } else {
+            statusText.textContent = "❌ Your account is not verified.";
+            verificationForm.style.display = "block";
+          }
 
-        // ✅ Add this to display profile photo
-        if (data.photo) {
-          document.getElementById("profilePreview").src = data.photo;
+          if (data.photo) {
+            document.getElementById("profilePreview").src = data.photo;
+            localStorage.setItem("photo", data.photo);
+          }
+
+          document.getElementById("phoneNumber").value = data.phoneNumber || "";
+          localStorage.setItem("phoneNumber", data.phoneNumber || "");
+
+          document.getElementById("address").value = data.address || "";
+          localStorage.setItem("address", data.address || "");
+
+          document.getElementById("dataConsent").checked = data.dataConsent === true;
+          localStorage.setItem("dataConsent", data.dataConsent);
+        } else {
+          statusText.textContent = "⚠️ Could not check verification status.";
         }
-      }
       } catch (err) {
         console.error(err);
         statusText.textContent = "❌ Server error.";
       }
     });
 
-    // Handle profile picture upload and other info update
     document.getElementById("updateInfoBtn").addEventListener("click", async () => {
       const email = localStorage.getItem("email");
       const phoneNumber = document.getElementById("phoneNumber").value;
       const address = document.getElementById("address").value;
       const profilePicture = document.getElementById("profilePicture").files[0];
+      const dataConsent = document.getElementById("dataConsent").checked;
 
       const formData = new FormData();
       formData.append("email", email);
       formData.append("phoneNumber", phoneNumber);
       formData.append("address", address);
-
+      formData.append("dataConsent", dataConsent);
       if (profilePicture) {
         formData.append("profilePicture", profilePicture);
       }
@@ -202,17 +229,35 @@
 
         if (res.ok) {
           alert("Your information has been updated.");
+
+          const refreshed = await fetch(`/api/auth/account?email=${email}`);
+          const updated = await refreshed.json();
+
+          document.getElementById("phoneNumber").value = updated.phoneNumber || "";
+          document.getElementById("address").value = updated.address || "";
+          document.getElementById("dataConsent").checked = updated.dataConsent === true;
+          if (updated.photo) {
+            document.getElementById("profilePreview").src = updated.photo;
+          }
+
+          // Update localStorage
+          localStorage.setItem("phoneNumber", updated.phoneNumber || "");
+          localStorage.setItem("address", updated.address || "");
+          localStorage.setItem("dataConsent", updated.dataConsent);
+          if (updated.photo) {
+            localStorage.setItem("photo", updated.photo);
+          }
         } else {
           const msg = await res.text();
-          alert("❌ Error: " + msg);
+          alert("❌ Failed to update information.\n" + msg);
         }
+
       } catch (err) {
         console.error(err);
-        alert("❌ Failed to update information.");
+        alert("❌ Something went wrong while sending the update.");
       }
     });
 
-    // Handle ID upload for verification
     document.getElementById("verificationForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const email = localStorage.getItem("email");
