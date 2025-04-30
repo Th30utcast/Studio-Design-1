@@ -5,86 +5,7 @@
   <title>Login - HomeQuest</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f0f4f8;
-      margin: 0;
-      padding: 0;
-    }
-
-    header {
-      background-color: #0C1E3D;
-      color: white;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 600;
-    }
-
-    nav a {
-      margin-left: 20px;
-      color: white;
-      text-decoration: none;
-    }
-
-    .container {
-      max-width: 400px;
-      margin: 60px auto;
-      padding: 30px;
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    .form-group {
-      margin-bottom: 15px;
-    }
-
-    label {
-      font-weight: 500;
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      font-size: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #3a6ee8;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background-color: #2f5ec1;
-    }
-
-    .language-switcher {
-      margin-left: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="../CSS/login_styles.css" />
 </head>
 <body>
   <header>
@@ -117,54 +38,8 @@
     <a href="register_page.html" style="color: #3a6ee8; text-decoration: underline;">Sign up</a>
   </p>
   
-  <!-- Optional language switcher -->
-  <script src="language-switcher.js"></script>
-  <script src="translations.js"></script>
-
-  <script>
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-      if (!email || !password) {
-        alert("Please fill in both fields.");
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ email, password })
-        });
-
-        if (res.ok) {
-          const result = await res.json();
-
-          // ✅ Store all important user data in localStorage
-          localStorage.setItem("userId", result.userId);
-          localStorage.setItem("email", result.email);
-          localStorage.setItem("userType", result.userType);
-          localStorage.setItem("membership", result.membership);
-          localStorage.setItem("firstName", result.firstName || "");
-          localStorage.setItem("lastName", result.lastName || "");
-          localStorage.setItem("phoneNumber", result.phoneNumber || "");
-          localStorage.setItem("address", result.address || "");
-
-          window.location.href = 'mainlogged_page.html';
-        } else {
-          const message = await res.text();
-          alert("Login failed: " + message);
-        }
-      } catch (err) {
-        console.error(err);
-        alert("An error occurred while logging in.");
-      }
-    });
-  </script>
+  <script src="../JS/language-switcher.js"></script>
+  <script src="../JS/translations.js"></script>
+  <script src="../JS/login_scripts.js"></script>  
 </body>
 </html>

@@ -7,313 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: url('https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg') no-repeat center center fixed;
-      background-size: cover;
-      color: #333;
-    }
-
-    header {
-      background-color: rgba(12, 30, 61, 0.95);
-      color: white;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-family: 'Great Vibes', cursive;
-      font-size: 36px;
-      color: white;
-    }
-
-    nav a {
-      margin-left: 20px;
-      color: white;
-      text-decoration: none;
-      font-size: 16px;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    .hero {
-      background: url('images/hero.jpg') no-repeat center center/cover;
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-      padding: 30px 20px;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-
-    .hero h1 {
-      font-size: 48px;
-      font-weight: 600;
-      background-color: rgba(12, 30, 61, 0.7);
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      margin-bottom: 20px;
-    }
-
-    .search-bar {
-      width: 80%;
-      max-width: 600px;
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-    }
-
-    .section {
-      padding: 50px 40px;
-      text-align: center;
-      background-color: rgba(255, 255, 255, 0.85);
-      margin: 20px;
-      border-radius: 12px;
-    }
-
-    .section h2 {
-      font-size: 32px;
-      margin-bottom: 30px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .cta {
-      display: none;
-    }
-
-    .cta a {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #fff;
-      color: #3a6ee8;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-
-    footer {
-      background-color: rgba(12, 30, 61, 0.95);
-      color: white;
-      text-align: center;
-      padding: 20px;
-    }
-    
-    .property-card {
-      background: white;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-      margin-bottom: 20px;
-      text-align: left;
-      cursor: pointer;
-    }
-    
-    .property-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-    }
-    
-    .property-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
-    
-    .property-info {
-      padding: 15px;
-    }
-    
-    .property-price {
-      font-weight: 700;
-      font-size: 1.2rem;
-      margin: 10px 0;
-    }
-    
-    .property-details {
-      color: #666;
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-    }
-    
-    .search-results {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
-    
-    /* Modal styles */
-    .listing-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-      overflow-y: auto;
-    }
-    
-    .modal-content {
-      background-color: white;
-      width: 80%;
-      max-width: 900px;
-      margin: 50px auto;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      animation: modalFadeIn 0.3s ease;
-    }
-    
-    @keyframes modalFadeIn {
-      from {opacity: 0; transform: translateY(-30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-    
-    .modal-header {
-      padding: 15px 20px;
-      background-color: #0C1E3D;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .modal-header h3 {
-      font-size: 24px;
-      font-weight: 600;
-    }
-    
-    .close-modal {
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      color: white;
-      background: none;
-      border: none;
-    }
-    
-    .close-modal:hover {
-      color: #ccc;
-    }
-    
-    .modal-body {
-      padding: 20px;
-    }
-    
-    .modal-gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-    
-    .modal-gallery img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    
-    .main-image {
-      width: 100%;
-      height: 400px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    
-    .listing-details {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-    
-    .detail-item {
-      background-color: #f5f5f5;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-    }
-    
-    .detail-value {
-      font-size: 24px;
-      font-weight: 600;
-      color: #0C1E3D;
-    }
-    
-    .detail-label {
-      color: #666;
-      font-size: 14px;
-    }
-    
-    .listing-description {
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    .action-button {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 6px;
-      font-size: 16px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    
-    .btn-primary {
-      background-color: #3a6ee8;
-      color: white;
-    }
-    
-    .btn-secondary {
-      background-color: #f5f5f5;
-      color: #333;
-    }
-    
-    .btn-primary:hover {
-      background-color: #2f5ec1;
-    }
-    
-    .btn-secondary:hover {
-      background-color: #e5e5e5;
-    }
-  </style>
-  <script src="translations.js"></script>
-  <script src="language-switcher.js"></script>
+  <link rel="stylesheet" href="../CSS/mainlogged_page_styles.css" />
 </head>
 <body>
   <header>
@@ -332,7 +26,6 @@
 
   <section class="hero">
     <h1 data-translate="welcome">Find Your Dream Home with HomeQuest</h1>
-  
     <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 700px; margin: 0 auto;">
       <input class="search-bar" type="text" id="searchText" placeholder="Search by location, price, or type..." data-translate="search_placeholder" style="flex: 1;">
       <button id="filterToggleBtn" onclick="toggleFilters()" style="padding: 10px 16px; font-size: 16px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;" data-translate="filters">
@@ -340,20 +33,19 @@
       </button>
     </div>
   </section>
-  
-  <!-- ✅ Move the filter panel OUTSIDE hero -->
+
   <div id="filterOptions" style="display: none; max-width: 700px; margin: 20px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
     <div style="display: flex; justify-content: center; gap: 20px;">
       <label><input type="radio" name="listingType" value="buy" checked> <span data-translate="buy">Buy</span></label>
       <label><input type="radio" name="listingType" value="rent"> <span data-translate="rent">Rent</span></label>
     </div>
-  
+
     <div style="display: flex; gap: 10px; flex-wrap: wrap;">
       <input type="text" id="filterLocation" placeholder="Location" data-translate="location" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
       <input type="number" id="minPrice" placeholder="Min Price (€)" data-translate="min_price" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
       <input type="number" id="maxPrice" placeholder="Max Price (€)" data-translate="max_price" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
     </div>
-  
+
     <select id="rooms" style="padding: 10px; border-radius: 6px; border: none;">
       <option value="" data-translate="rooms">Number of Rooms</option>
       <option value="1">1+</option>
@@ -361,25 +53,23 @@
       <option value="3">3+</option>
       <option value="4">4+</option>
     </select>
-  
+
     <label style="color: white;">
       <input type="checkbox" id="verified"> <span data-translate="verified">Verified Properties Only</span>
     </label>
-  
+
     <button id="searchButton" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;" data-translate="search">
       Search
     </button>
-  </div>  
-  </section>
+  </div>
 
   <section class="section" id="listings">
     <h2 data-translate="featured">Featured Listings</h2>
     <div class="search-results" id="searchResults">
-      <!-- Results will be populated here by JavaScript -->
+      <!-- Results will be populated here -->
     </div>
   </section>
 
-  <!-- Listing Modal -->
   <div id="listingModal" class="listing-modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -387,7 +77,7 @@
         <button class="close-modal" onclick="closeModal()">&times;</button>
       </div>
       <div class="modal-body" id="modalBody">
-        <!-- Content will be dynamically inserted here -->
+        <!-- Content inserted by JS -->
       </div>
     </div>
   </div>
@@ -401,333 +91,8 @@
     <p data-translate="copyright">&copy; 2025 HomeQuest. All rights reserved.</p>
   </footer>
 
-  <script>
-    function toggleFilters() {
-      const filterSection = document.getElementById('filterOptions');
-      const toggleBtn = document.getElementById('filterToggleBtn');
-      const isVisible = filterSection.style.display === 'flex';
-      filterSection.style.display = isVisible ? 'none' : 'flex';
-      toggleBtn.innerHTML = isVisible ? '&#9881; ' + translations[document.documentElement.lang || 'en']['filters'] : '&#9881; ' + translations[document.documentElement.lang || 'en']['hide_filters'];
-    }
-
-    // Modal functions
-    function closeModal() {
-      const modal = document.getElementById('listingModal');
-      modal.style.display = 'none';
-      document.body.style.overflow = 'auto'; // Restore scrolling
-    }
-    
-    function updateMainImage(src) {
-      const mainImage = document.querySelector('.main-image');
-      mainImage.src = src;
-    }
-    
-    // Placeholder functions for the action buttons
-    function contactAgentFor(listingId) {
-      window.location.href = `contact_agent.html?listing=${listingId}`;
-    }
-    
-    function scheduleViewing(listingId) {
-      window.location.href = `appointment_page.html?listing=${listingId}`;
-    }
-    
-    function addToFavorites(listingId) {
-      alert('Add to favorites feature will be implemented soon!'); // Make API call to add to favorites - S3eed.
-    }
-    
-    // Close modal if clicked outside
-    window.onclick = function(event) {
-      const modal = document.getElementById('listingModal');
-      if (event.target === modal) {
-        closeModal();
-      }
-    };
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchButton = document.getElementById('searchButton');
-      const searchText = document.getElementById('searchText');
-      const filterLocation = document.getElementById('filterLocation');
-      const minPrice = document.getElementById('minPrice');
-      const maxPrice = document.getElementById('maxPrice');
-      const rooms = document.getElementById('rooms');
-      const verified = document.getElementById('verified');
-      const resultsContainer = document.getElementById('searchResults');
-      const listingTypeOptions = document.getElementsByName('listingType');
-      
-      async function fetchListings(filters = {}) {
-        try {
-          const params = new URLSearchParams();
-          
-          // Basic filters
-          if (filters.location) params.append('location', filters.location);
-          if (filters.minPrice) params.append('minPrice', filters.minPrice);
-          if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
-          
-          // Handle listing type (buy/rent)
-          for (const option of listingTypeOptions) {
-            if (option.checked) {
-              params.append('listingType', option.value === 'buy' ? 'purchase' : 'rent');
-              break;
-            }
-          }
-          
-          // Handle bedrooms filter
-          if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
-          
-          // Optional: handle other schema fields if UI elements exist
-          if (filters.apartmentType) params.append('apartmentType', filters.apartmentType);
-          if (filters.bathrooms) params.append('bathrooms', filters.bathrooms);
-          if (filters.duration) params.append('duration', filters.duration);
-          if (filters.size) params.append('size', filters.size);
-          
-          // Add verified filter if checked
-          if (verified.checked) {
-            params.append('verified', true);
-          }
-          
-          const response = await fetch(`/api/listings?${params.toString()}`);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const listings = await response.json();
-          resultsContainer.innerHTML = '';
-          
-          listings.forEach(listing => {
-            const listingCard = document.createElement('div');
-            listingCard.className = 'property-card';
-            // Store listing data as data attribute for later use
-            listingCard.dataset.listingData = JSON.stringify(listing);
-            
-            // Determine if it's for rent or purchase
-            const listingTypeLabel = listing.listingType === 'rent' ? 'For Rent' : 'For Sale';
-            
-            // Format price based on listing type
-            const priceDisplay = listing.listingType === 'rent' 
-              ? `€${listing.price?.toLocaleString() || 'Price on request'}/month` 
-              : `€${listing.price?.toLocaleString() || 'Price on request'}`;
-            
-            // Create additional details string
-            let details = `${listing.bedrooms || 'N/A'} beds | ${listing.bathrooms || 'N/A'} baths`;
-            if (listing.size) {
-              details += ` | ${listing.size}`;
-            }
-            if (listing.apartmentType) {
-              details += ` | ${listing.apartmentType.charAt(0).toUpperCase() + listing.apartmentType.slice(1)}`;
-            }
-            
-            listingCard.innerHTML = `
-              <img src="${listing.photos?.[0] || 'https://via.placeholder.com/400x300?text=Property+Image'}" 
-                   alt="${listing.location}" class="property-image">
-              <div class="property-info">
-                <span style="background-color: #3a6ee8; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px;">${listingTypeLabel}</span>
-                <h3>${listing.location}</h3>
-                <div class="property-price">${priceDisplay}</div>
-                <div class="property-details">${details}</div>
-                <p>${listing.description?.substring(0, 100) || 'No description available'}${listing.description?.length > 100 ? '...' : ''}</p>
-              </div>
-            `;
-            
-            // Add click event to open modal
-            listingCard.addEventListener('click', function() {
-              const listingData = JSON.parse(this.dataset.listingData);
-              openModal(listingData);
-            });
-            
-            resultsContainer.appendChild(listingCard);
-          });
-          
-          if (listings.length === 0) {
-            resultsContainer.innerHTML = '<p style="grid-column:1/-1;text-align:center;">No properties found matching your criteria.</p>';
-          }
-        } catch (error) {
-          console.error('Error fetching listings:', error);
-          resultsContainer.innerHTML = `
-            <p style="grid-column:1/-1;text-align:center;color:red;">
-              Error loading properties: ${error.message}
-            </p>
-          `;
-        }
-      }
-      
-      // Initialize with default listings
-      fetchListings();
-      
-      // Handle search button click
-      searchButton.addEventListener('click', function() {
-        const filters = {
-          location: filterLocation.value.trim() || searchText.value.trim(),
-          bedrooms: rooms.value,
-          minPrice: minPrice.value,
-          maxPrice: maxPrice.value
-        };
-        
-        fetchListings(filters);
-      });
-      
-      // Handle enter key in search text field
-      searchText.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          const filters = {
-            location: this.value.trim()
-          };
-          fetchListings(filters);
-        }
-      });
-      
-      // Update modal function to handle the schema fields correctly
-      window.openModal = function(listing) {
-        const modal = document.getElementById('listingModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        
-        // Set title
-        modalTitle.textContent = listing.location || 'Property Details';
-        
-        // Create modal content
-        let modalContent = '';
-        
-        // Main image
-        const mainImage = listing.photos && listing.photos.length ? listing.photos[0] : 'https://via.placeholder.com/800x500?text=Property+Image';
-        modalContent += `<img src="${mainImage}" alt="${listing.location}" class="main-image">`;
-        
-        // Photo gallery (if multiple photos)
-        if (listing.photos && listing.photos.length > 1) {
-          modalContent += '<div class="modal-gallery">';
-          listing.photos.forEach(photo => {
-            modalContent += `<img src="${photo}" alt="${listing.location}" onclick="updateMainImage(this.src)">`;
-          });
-          modalContent += '</div>';
-        }
-        
-        // Key details
-        modalContent += '<div class="listing-details">';
-        
-        // Price based on listing type
-        const priceDisplay = listing.listingType === 'rent' 
-          ? `€${listing.price?.toLocaleString() || 'Price on request'}/month` 
-          : `€${listing.price?.toLocaleString() || 'Price on request'}`;
-        
-        modalContent += `
-          <div class="detail-item">
-            <div class="detail-value">${priceDisplay}</div>
-            <div class="detail-label">Price</div>
-          </div>
-        `;
-        
-        // Listing type
-        modalContent += `
-          <div class="detail-item">
-            <div class="detail-value">${listing.listingType === 'rent' ? 'For Rent' : 'For Sale'}</div>
-            <div class="detail-label">Listing Type</div>
-          </div>
-        `;
-        
-        // Apartment type
-        if (listing.apartmentType) {
-          modalContent += `
-            <div class="detail-item">
-              <div class="detail-value">${listing.apartmentType.charAt(0).toUpperCase() + listing.apartmentType.slice(1)}</div>
-              <div class="detail-label">Property Type</div>
-            </div>
-          `;
-        }
-        
-        // Bedrooms
-        modalContent += `
-          <div class="detail-item">
-            <div class="detail-value">${listing.bedrooms || 'N/A'}</div>
-            <div class="detail-label">Bedrooms</div>
-          </div>
-        `;
-        
-        // Bathrooms
-        modalContent += `
-          <div class="detail-item">
-            <div class="detail-value">${listing.bathrooms || 'N/A'}</div>
-            <div class="detail-label">Bathrooms</div>
-          </div>
-        `;
-        
-        // Size
-        if (listing.size) {
-          modalContent += `
-            <div class="detail-item">
-              <div class="detail-value">${listing.size}</div>
-              <div class="detail-label">Size</div>
-            </div>
-          `;
-        }
-        
-        // Duration (only for rent)
-        if (listing.listingType === 'rent' && listing.duration) {
-          modalContent += `
-            <div class="detail-item">
-              <div class="detail-value">${listing.duration}</div>
-              <div class="detail-label">Rental Duration</div>
-            </div>
-          `;
-        }
-        
-        modalContent += '</div>';
-        
-        // Description
-        if (listing.description) {
-          modalContent += `
-            <h4>Description</h4>
-            <p class="listing-description">${listing.description}</p>
-          `;
-        }
-        
-        // Location details
-        modalContent += `
-          <h4>Location</h4>
-          <p class="listing-description">${listing.location}</p>
-        `;
-        
-        // Show created date
-        if (listing.createdAt) {
-          const listingDate = new Date(listing.createdAt);
-          modalContent += `
-            <p style="color: #666; font-size: 12px; margin-top: 20px;">
-              Listed on: ${listingDate.toLocaleDateString()}
-            </p>
-          `;
-        }
-        
-        // Action buttons
-        modalContent += `
-          <div class="action-buttons">
-            <button class="action-button btn-primary" onclick="contactAgentFor('${listing._id}')">Contact Agent</button>
-            <button class="action-button btn-secondary" onclick="scheduleViewing('${listing._id}')">Schedule Viewing</button>
-            <button class="action-button btn-secondary" onclick="addToFavorites('${listing._id}')">Add to Favorites</button>
-          </div>
-        `;
-        
-        // Set the content
-        modalBody.innerHTML = modalContent;
-        
-        // Show the modal
-        modal.style.display = 'block';
-        
-        // Prevent body scrolling when modal is open
-        document.body.style.overflow = 'hidden';
-      };
-    });
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const addBtn = document.getElementById("addListingBtn");
-      const userType = localStorage.getItem("userType"); // Must be stored at login
-  
-      if (userType === "seller") {
-        addBtn.style.display = "inline-block";
-        addBtn.addEventListener("click", () => {
-          window.location.href = "add_listing.html";
-        });
-      }
-    });
-  </script>  
+  <script src="../JS/translations.js"></script>
+  <script src="../JS/language-switcher.js"></script>
+  <script src="../JS/mainlogged_page_scripts.js"></script>
 </body>
 </html>

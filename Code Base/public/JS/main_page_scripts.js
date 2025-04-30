@@ -1,0 +1,1 @@
+// No page-specific JavaScript in main_page.html other than translations and language-switcher.
