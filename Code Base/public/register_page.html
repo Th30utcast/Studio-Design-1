@@ -2,194 +2,216 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HomeQuest - Register</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Register - HomeQuest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #0C1E3D;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      background-color: #f0f4f8;
       margin: 0;
+      padding: 0;
     }
 
-    .register-container {
-      background-color: #162c52;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 8px 15px rgba(0,0,0,0.3);
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
+    header {
+      background-color: #0C1E3D;
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .logo {
-      font-size: 44px;
-      font-family: 'Great Vibes', cursive;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #ffffff;
+      font-size: 28px;
+      font-weight: 600;
     }
 
-    #register-form h2 {
-      font-size: 28px;
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 450px;
+      margin: 60px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
       margin-bottom: 25px;
-      font-family: 'Times New Roman', Times, serif;
     }
 
     .form-group {
-      margin-bottom: 18px;
-      text-align: left;
+      margin-bottom: 15px;
     }
 
-    .form-group label {
+    label {
+      font-weight: 500;
       display: block;
-      font-size: 15px;
       margin-bottom: 6px;
     }
 
-    .form-group input {
-      width: 100%;
-      padding: 11px;
-      border-radius: 6px;
-      border: none;
-      font-size: 15px;
-      box-sizing: border-box;
+    label .required {
+      color: red;
     }
 
-    button[type="submit"] {
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
       width: 100%;
       padding: 12px;
-      font-size: 17px;
       background-color: #3a6ee8;
       color: white;
       border: none;
       border-radius: 6px;
+      font-size: 16px;
       cursor: pointer;
       margin-top: 10px;
-      transition: background-color 0.3s ease;
     }
 
-    button[type="submit"]:hover {
-      background-color: #335dc1;
+    button:hover {
+      background-color: #2f5ec1;
     }
 
-    a {
-      color: #8fb6ff;
-      text-decoration: none;
+    .error {
+      color: red;
       font-size: 14px;
-    }
-
-    a:hover {
-      text-decoration: underline;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      display: none;
     }
   </style>
-  <script src="translations.js"></script>
-  <script src="language-switcher.js"></script>
 </head>
 <body>
-  <div class="register-container">
-    <h1 class="logo" data-translate="logo">HomeQuest</h1>
-    <form id="register-form">
-      <h2 data-translate="register">Register</h2>
+  <header>
+    <div class="logo">HomeQuest</div>
+    <nav>
+      <a href="main_page.html">Home</a>
+      <a href="login_page.html">Login</a>
+    </nav>
+  </header>
 
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="registerForm">
       <div class="form-group">
-        <label for="firstName" data-translate="first_name">First Name:</label>
-        <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" data-translate="enter_first_name" required />
+        <label for="firstName">First Name <span class="required">*</span></label>
+        <input type="text" id="firstName" required />
       </div>
 
       <div class="form-group">
-        <label for="lastName" data-translate="last_name">Last Name:</label>
-        <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" data-translate="enter_last_name" required />
+        <label for="lastName">Last Name <span class="required">*</span></label>
+        <input type="text" id="lastName" required />
       </div>
 
       <div class="form-group">
-        <label for="phoneNumber" data-translate="phone">Phone Number:</label>
-        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter your phone number" data-translate="enter_phone" />
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" required />
       </div>
 
       <div class="form-group">
-        <label for="address" data-translate="address">Address:</label>
-        <input type="text" id="address" name="address" placeholder="Enter your address" data-translate="enter_address" required />
+        <label for="password">Password <span class="required">*</span></label>
+        <input type="password" id="password" required />
       </div>
 
       <div class="form-group">
-        <label for="email" data-translate="email">Email:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" data-translate="enter_email" required />
+        <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+        <input type="password" id="confirmPassword" required />
+        <div class="error" id="passwordError">Passwords do not match.</div>
       </div>
 
       <div class="form-group">
-        <label for="userType" data-translate="user_type">Register As:</label>
-        <select id="userType" name="userType" required>
-          <option value="">Select user type</option>
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <input type="text" id="address" />
+      </div>
+
+      <div class="form-group">
+        <label for="userType">Register As <span class="required">*</span></label>
+        <select id="userType" required>
+          <option value="">Select type</option>
           <option value="buyer">Buyer</option>
           <option value="seller">Seller</option>
         </select>
       </div>
 
-      <div class="form-group">
-        <label for="password" data-translate="password">Password:</label>
-        <input type="password" id="password" name="password" placeholder="Enter your password" data-translate="enter_password" required />
-      </div>
+      <button type="submit">Register</button>
 
-      <div class="form-group">
-        <label for="confirm-password" data-translate="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" data-translate="confirm_password_placeholder" required />
-      </div>
-
-      <button type="submit" data-translate="register">Register</button>
-      <p data-translate="already_have_account">Already have an account? <a href="login_page.html" data-translate="login">Login</a></p>
+      <p style="text-align: center; margin-top: 15px;">
+        Already have an account?
+        <a href="login_page.html" style="color: #3a6ee8; text-decoration: underline;">Log in</a>
+      </p>
     </form>
   </div>
 
   <script>
-    document.getElementById('register-form').addEventListener('submit', async function(e) {
+    document.getElementById('registerForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirm-password').value;
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const passwordError = document.getElementById('passwordError');
 
       if (password !== confirmPassword) {
-        alert("Passwords do not match.");
+        passwordError.style.display = "block";
         return;
+      } else {
+        passwordError.style.display = "none";
       }
 
       const data = {
-  firstName: document.getElementById('firstName').value,
-  lastName: document.getElementById('lastName').value,
-  phoneNumber: document.getElementById('phoneNumber').value,
-  address: document.getElementById('address').value,
-  email: document.getElementById('email').value,
-  password: password,
-  userType: document.getElementById('userType').value
-};
-
+        firstName: document.getElementById('firstName').value.trim(),
+        lastName: document.getElementById('lastName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: password,
+        phoneNumber: document.getElementById('phoneNumber').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        userType: document.getElementById('userType').value
+      };
 
       try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
+        const res = await fetch('/api/auth/register', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json'
+          },
           body: JSON.stringify(data)
         });
 
-        const message = await response.text();
+        if (res.ok) {
+          localStorage.setItem("email", data.email);
+          localStorage.setItem("userType", data.userType);
+          localStorage.setItem("firstName", data.firstName);
+          localStorage.setItem("lastName", data.lastName);
+          localStorage.setItem("phoneNumber", data.phoneNumber);
+          localStorage.setItem("address", data.address);
+          localStorage.setItem("membership", "silver"); // default for sellers
 
-        if (response.ok) {
-          alert("Registered successfully!");
-          window.location.href = "main_page.html";
+          alert("Registration successful!");
+          window.location.href = "mainlogged_page.html";
         } else {
-          alert(message);
+          const msg = await res.text();
+          alert("Registration failed: " + msg);
         }
-
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Registration failed.");
+      } catch (err) {
+        console.error(err);
+        alert("An error occurred during registration.");
       }
     });
   </script>
