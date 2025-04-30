@@ -514,15 +514,15 @@
     
     // Placeholder functions for the action buttons
     function contactAgentFor(listingId) {
-      alert('Contact agent feature will be implemented soon!');
+      window.location.href = `contact-agent.html?listing=${listingId}`;
     }
     
     function scheduleViewing(listingId) {
-      alert('Schedule viewing feature will be implemented soon!');
+      window.location.href = `schedule-viewing.html?listing=${listingId}`;
     }
     
     function addToFavorites(listingId) {
-      alert('Add to favorites feature will be implemented soon!');
+      alert('Add to favorites feature will be implemented soon!'); // Make API call to add to favorites - S3eed.
     }
     
     // Close modal if clicked outside
