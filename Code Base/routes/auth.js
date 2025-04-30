@@ -1,9 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
 const User = require('../models/User');
 
-// Register Route
+// Set up multer for profile picture or document uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
+
+// ========================= REGISTER =========================
 router.post('/register', async (req, res) => {
   const {
     firstName,
@@ -12,8 +24,8 @@ router.post('/register', async (req, res) => {
     password,
     phoneNumber,
     address,
-    userType,       // 'buyer' or 'seller'
-    membership      // optional: 'gold' or 'silver'
+    userType,
+    membership
   } = req.body;
 
   try {
@@ -47,7 +59,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login Route
+// ========================= LOGIN =========================
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -66,15 +78,20 @@ router.post('/login', async (req, res) => {
       message: "Login successful.",
       userId: user._id,
       userType: user.userType,
-      membership: user.membership || "silver"
-    });
+      email: user.email,
+      membership: user.membership || "silver",
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      phoneNumber: user.phoneNumber || "",
+      address: user.address || ""
+    });    
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).send("Server error. Please try again later.");
   }
 });
 
-// Get Account Info
+// ========================= GET ACCOUNT INFO =========================
 router.get('/account', async (req, res) => {
   try {
     const { email } = req.query;
@@ -95,10 +112,12 @@ router.get('/account', async (req, res) => {
   }
 });
 
-// Upload ID for Verification
-router.post('/upload-id', async (req, res) => {
+// ========================= UPLOAD ID FOR VERIFICATION =========================
+router.post('/upload-id', upload.single('idDocument'), async (req, res) => {
   try {
     const { email } = req.body;
+
+    if (!email) return res.status(400).send("Missing email.");
 
     await User.updateOne({ email }, { isVerified: true });
 
@@ -109,7 +128,7 @@ router.post('/upload-id', async (req, res) => {
   }
 });
 
-// Upgrade Membership
+// ========================= UPGRADE MEMBERSHIP =========================
 router.post('/upgrade-membership', async (req, res) => {
   try {
     const { email } = req.body;
@@ -119,6 +138,31 @@ router.post('/upgrade-membership', async (req, res) => {
     res.status(200).send("Membership upgraded to Gold.");
   } catch (err) {
     console.error("Membership upgrade error:", err);
+    res.status(500).send("Server error.");
+  }
+});
+
+// ========================= UPDATE USER INFO =========================
+router.post('/update-info', upload.single('profilePicture'), async (req, res) => {
+  try {
+    const { email, phoneNumber, address } = req.body;
+
+    if (!email) return res.status(400).send("Missing email.");
+
+    const updateFields = {
+      phoneNumber,
+      address
+    };
+
+    if (req.file) {
+      updateFields.photo = `/uploads/${req.file.filename}`;
+    }
+
+    await User.updateOne({ email }, { $set: updateFields });
+
+    res.status(200).send("User information updated successfully.");
+  } catch (err) {
+    console.error("Update info error:", err);
     res.status(500).send("Server error.");
   }
 });
