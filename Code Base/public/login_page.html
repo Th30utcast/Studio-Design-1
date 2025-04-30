@@ -142,8 +142,13 @@
         });
 
         if (res.ok) {
-          window.location.href = 'mainlogged_page.html';
-        } else {
+  const result = await res.json();
+  localStorage.setItem('userId', result.userId);
+  localStorage.setItem('userType', result.userType);
+  localStorage.setItem('membership', result.membership);
+  window.location.href = 'mainlogged_page.html';
+}
+else {
           const msg = await res.text();
           errorMsg.textContent = msg || 'Login failed. Please try again.';
         }

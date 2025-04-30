@@ -1,68 +1,72 @@
 const express = require('express');
 const router = express.Router();
+
+const multer = require('multer');
+const User = require('../models/User');
 const Listing = require('../models/Listing');
 
-router.get('/', async (req, res) => {
+// Configure Multer for image uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// POST /api/listings/add
+router.post('/add', upload.array('photos', 5), async (req, res) => {
   try {
-    const { 
-      search, 
-      location,
-      minPrice, 
-      maxPrice, 
-      bedrooms, 
+    const {
+      sellerId,
+      listingType,
+      apartmentType,
+      duration,
+      price,
+      size,
+      bedrooms,
       bathrooms,
-      listingType // 'buy' or 'rent'
-    } = req.query;
+      location,
+      description
+    } = req.body;
 
-    // Build the filter object
-    const filters = {};
-
-    // Text search (searches both name and location)
-    if (search) {
-      filters.$or = [
-        { Name: new RegExp(search, 'i') },
-        { Location: new RegExp(search, 'i') }
-      ];
+    const user = await User.findById(sellerId);
+    if (!user || user.userType !== 'seller') {
+      return res.status(403).json({ error: 'Only sellers can add listings.' });
     }
 
-    // Location-only filter
-    if (location) {
-      filters.Location = new RegExp(location, 'i');
+    // Listing limit check
+    if (user.membership !== 'gold') {
+      const listingCount = await Listing.countDocuments({ sellerId });
+      if (listingCount >= 3) {
+        return res.status(400).json({ error: 'You have reached the listing limit for your membership plan.' });
+      }
     }
 
-    // Price range filter
-    if (minPrice || maxPrice) {
-      filters.Price = {};
-      if (minPrice) filters.Price.$gte = Number(minPrice);
-      if (maxPrice) filters.Price.$lte = Number(maxPrice);
-    }
+    const photoPaths = req.files.map(file => `/uploads/${file.filename}`);
 
-    // Bedrooms filter
-    if (bedrooms) {
-      filters.Bedrooms = Number(bedrooms);
-    }
-
-    // Bathrooms filter
-    if (bathrooms) {
-      filters.Bathrooms = Number(bathrooms);
-    }
-
-    // Listing type filter
-    if (listingType) {
-      filters.ListingType = listingType.toLowerCase(); // 'buy' or 'rent'
-    }
-
-    console.log('Search filters:', filters); // For debugging
-
-    const listings = await Listing.find(filters);
-    res.json(listings);
-
-  } catch (err) {
-    console.error('Search error:', err);
-    res.status(500).json({ 
-      error: 'Server error',
-      details: err.message 
+    const newListing = new Listing({
+      sellerId,
+      listingType,
+      apartmentType,
+      duration: listingType === 'rent' ? duration : undefined,
+      price,
+      size,
+      bedrooms,
+      bathrooms,
+      location,
+      description,
+      photos: photoPaths
     });
+
+    await newListing.save();
+    res.status(201).json({ message: 'Listing added successfully.' });
+  } catch (err) {
+    console.error('Create listing error:', err);
+    res.status(500).json({ error: 'Server error.', details: err.message });
   }
 });
 

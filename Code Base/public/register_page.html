@@ -125,6 +125,15 @@
       </div>
 
       <div class="form-group">
+        <label for="userType" data-translate="user_type">Register As:</label>
+        <select id="userType" name="userType" required>
+          <option value="">Select user type</option>
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="password" data-translate="password">Password:</label>
         <input type="password" id="password" name="password" placeholder="Enter your password" data-translate="enter_password" required />
       </div>
@@ -152,13 +161,15 @@
       }
 
       const data = {
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        phoneNumber: document.getElementById('phoneNumber').value,
-        address: document.getElementById('address').value,
-        email: document.getElementById('email').value,
-        password: password
-      };
+  firstName: document.getElementById('firstName').value,
+  lastName: document.getElementById('lastName').value,
+  phoneNumber: document.getElementById('phoneNumber').value,
+  address: document.getElementById('address').value,
+  email: document.getElementById('email').value,
+  password: password,
+  userType: document.getElementById('userType').value
+};
+
 
       try {
         const response = await fetch('http://localhost:3000/api/auth/register', {
