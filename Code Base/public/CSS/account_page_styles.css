@@ -1,0 +1,92 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    background-color: #0C1E3D;
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  nav a {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  h2 {
+    margin-top: 0;
+    text-align: center;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .form-group input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  
+  button {
+    background-color: #3a6ee8;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2f5ec1;
+  }
+  
+  #verification-section {
+    margin-top: 40px;
+  }
+  
+  #profilePreview {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3a6ee8;
+    margin-bottom: 20px;
+  }
+  
