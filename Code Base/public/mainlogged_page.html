@@ -125,6 +125,12 @@
       transition: transform 0.3s ease;
       margin-bottom: 20px;
       text-align: left;
+      cursor: pointer;
+    }
+    
+    .property-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     
     .property-image {
@@ -154,6 +160,152 @@
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 20px;
       margin-top: 30px;
+    }
+    
+    /* Modal styles */
+    .listing-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    
+    .modal-content {
+      background-color: white;
+      width: 80%;
+      max-width: 900px;
+      margin: 50px auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: modalFadeIn 0.3s ease;
+    }
+    
+    @keyframes modalFadeIn {
+      from {opacity: 0; transform: translateY(-30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    
+    .modal-header {
+      padding: 15px 20px;
+      background-color: #0C1E3D;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .modal-header h3 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .close-modal {
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+    }
+    
+    .close-modal:hover {
+      color: #ccc;
+    }
+    
+    .modal-body {
+      padding: 20px;
+    }
+    
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .modal-gallery img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    
+    .main-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .listing-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .detail-item {
+      background-color: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .detail-value {
+      font-size: 24px;
+      font-weight: 600;
+      color: #0C1E3D;
+    }
+    
+    .detail-label {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .listing-description {
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .action-button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .btn-primary {
+      background-color: #3a6ee8;
+      color: white;
+    }
+    
+    .btn-secondary {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2f5ec1;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #e5e5e5;
     }
   </style>
   <script src="translations.js"></script>
@@ -218,6 +370,19 @@
     </div>
   </section>
 
+  <!-- Listing Modal -->
+  <div id="listingModal" class="listing-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Property Details</h3>
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
   <section class="section" id="about">
     <h2 data-translate="about">About</h2>
     <p data-translate="browse">Browse listings, connect with agents, and schedule viewings all in one place.</p>
@@ -235,6 +400,135 @@
       filterSection.style.display = isVisible ? 'none' : 'flex';
       toggleBtn.innerHTML = isVisible ? '&#9881; ' + translations[document.documentElement.lang || 'en']['filters'] : '&#9881; ' + translations[document.documentElement.lang || 'en']['hide_filters'];
     }
+
+    // Modal functions
+    function openModal(listing) {
+      const modal = document.getElementById('listingModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalBody = document.getElementById('modalBody');
+      
+      // Set title
+      modalTitle.textContent = listing.Location || 'Property Details';
+      
+      // Create modal content
+      let modalContent = '';
+      
+      // Main image
+      const mainImage = listing.Photos && listing.Photos.length ? listing.Photos[0] : 'https://via.placeholder.com/800x500?text=Property+Image';
+      modalContent += `<img src="${mainImage}" alt="${listing.Location}" class="main-image">`;
+      
+      // Photo gallery (if multiple photos)
+      if (listing.Photos && listing.Photos.length > 1) {
+        modalContent += '<div class="modal-gallery">';
+        listing.Photos.forEach(photo => {
+          modalContent += `<img src="${photo}" alt="${listing.Location}" onclick="updateMainImage(this.src)">`;
+        });
+        modalContent += '</div>';
+      }
+      
+      // Key details
+      modalContent += '<div class="listing-details">';
+      
+      // Price
+      modalContent += `
+        <div class="detail-item">
+          <div class="detail-value">€${listing.Price?.toLocaleString() || 'Price on request'}</div>
+          <div class="detail-label">Price</div>
+        </div>
+      `;
+      
+      // Bedrooms
+      modalContent += `
+        <div class="detail-item">
+          <div class="detail-value">${listing.Bedrooms || 'N/A'}</div>
+          <div class="detail-label">Bedrooms</div>
+        </div>
+      `;
+      
+      // Bathrooms
+      modalContent += `
+        <div class="detail-item">
+          <div class="detail-value">${listing.Bathrooms || 'N/A'}</div>
+          <div class="detail-label">Bathrooms</div>
+        </div>
+      `;
+      
+      // Size
+      if (listing.details) {
+        modalContent += `
+          <div class="detail-item">
+            <div class="detail-value">${listing.details}</div>
+            <div class="detail-label">Size</div>
+          </div>
+        `;
+      }
+      
+      modalContent += '</div>';
+      
+      // Description
+      if (listing.Description) {
+        modalContent += `
+          <h4>Description</h4>
+          <p class="listing-description">${listing.Description}</p>
+        `;
+      }
+      
+      // Location details
+      modalContent += `
+        <h4>Location</h4>
+        <p class="listing-description">${listing.Location}</p>
+      `;
+      
+      // Action buttons
+      modalContent += `
+        <div class="action-buttons">
+          <button class="action-button btn-primary" onclick="contactAgentFor('${listing._id}')">Contact Agent</button>
+          <button class="action-button btn-secondary" onclick="scheduleViewing('${listing._id}')">Schedule Viewing</button>
+          <button class="action-button btn-secondary" onclick="addToFavorites('${listing._id}')">Add to Favorites</button>
+        </div>
+      `;
+      
+      // Set the content
+      modalBody.innerHTML = modalContent;
+      
+      // Show the modal
+      modal.style.display = 'block';
+      
+      // Prevent body scrolling when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeModal() {
+      const modal = document.getElementById('listingModal');
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto'; // Restore scrolling
+    }
+    
+    function updateMainImage(src) {
+      const mainImage = document.querySelector('.main-image');
+      mainImage.src = src;
+    }
+    
+    // Placeholder functions for the action buttons
+    function contactAgentFor(listingId) {
+      alert('Contact agent feature will be implemented soon!');
+    }
+    
+    function scheduleViewing(listingId) {
+      alert('Schedule viewing feature will be implemented soon!');
+    }
+    
+    function addToFavorites(listingId) {
+      alert('Add to favorites feature will be implemented soon!');
+    }
+    
+    // Close modal if clicked outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('listingModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
 
     document.addEventListener('DOMContentLoaded', function() {
       const searchButton = document.getElementById('searchButton');
@@ -266,17 +560,25 @@
           listings.forEach(listing => {
             const listingCard = document.createElement('div');
             listingCard.className = 'property-card';
+            // Store listing data as data attribute for later use
+            listingCard.dataset.listingData = JSON.stringify(listing);
             
             listingCard.innerHTML = `
-              <img src="${listing.Photos[0] || 'https://via.placeholder.com/400x300?text=Property+Image'}" 
+              <img src="${listing.Photos?.[0] || 'https://via.placeholder.com/400x300?text=Property+Image'}" 
                    alt="${listing.Location}" class="property-image">
               <div class="property-info">
                 <h3>${listing.Location}</h3>
                 <div class="property-price">€${listing.Price?.toLocaleString() || 'Price on request'}</div>
                 <div class="property-details">${listing.Bedrooms || 'N/A'} beds | ${listing.Bathrooms || 'N/A'} baths</div>
-                <p>${listing.Description || 'No description available'}</p>
+                <p>${listing.Description?.substring(0, 100) || 'No description available'}${listing.Description?.length > 100 ? '...' : ''}</p>
               </div>
             `;
+            
+            // Add click event to open modal
+            listingCard.addEventListener('click', function() {
+              const listingData = JSON.parse(this.dataset.listingData);
+              openModal(listingData);
+            });
             
             resultsContainer.appendChild(listingCard);
           });
