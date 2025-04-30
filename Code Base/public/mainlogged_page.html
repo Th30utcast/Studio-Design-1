@@ -405,102 +405,6 @@
     }
 
     // Modal functions
-    function openModal(listing) {
-      const modal = document.getElementById('listingModal');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalBody = document.getElementById('modalBody');
-      
-      // Set title
-      modalTitle.textContent = listing.Location || 'Property Details';
-      
-      // Create modal content
-      let modalContent = '';
-      
-      // Main image
-      const mainImage = listing.Photos && listing.Photos.length ? listing.Photos[0] : 'https://via.placeholder.com/800x500?text=Property+Image';
-      modalContent += `<img src="${mainImage}" alt="${listing.Location}" class="main-image">`;
-      
-      // Photo gallery (if multiple photos)
-      if (listing.Photos && listing.Photos.length > 1) {
-        modalContent += '<div class="modal-gallery">';
-        listing.Photos.forEach(photo => {
-          modalContent += `<img src="${photo}" alt="${listing.Location}" onclick="updateMainImage(this.src)">`;
-        });
-        modalContent += '</div>';
-      }
-      
-      // Key details
-      modalContent += '<div class="listing-details">';
-      
-      // Price
-      modalContent += `
-        <div class="detail-item">
-          <div class="detail-value">€${listing.Price?.toLocaleString() || 'Price on request'}</div>
-          <div class="detail-label">Price</div>
-        </div>
-      `;
-      
-      // Bedrooms
-      modalContent += `
-        <div class="detail-item">
-          <div class="detail-value">${listing.Bedrooms || 'N/A'}</div>
-          <div class="detail-label">Bedrooms</div>
-        </div>
-      `;
-      
-      // Bathrooms
-      modalContent += `
-        <div class="detail-item">
-          <div class="detail-value">${listing.Bathrooms || 'N/A'}</div>
-          <div class="detail-label">Bathrooms</div>
-        </div>
-      `;
-      
-      // Size
-      if (listing.details) {
-        modalContent += `
-          <div class="detail-item">
-            <div class="detail-value">${listing.details}</div>
-            <div class="detail-label">Size</div>
-          </div>
-        `;
-      }
-      
-      modalContent += '</div>';
-      
-      // Description
-      if (listing.Description) {
-        modalContent += `
-          <h4>Description</h4>
-          <p class="listing-description">${listing.Description}</p>
-        `;
-      }
-      
-      // Location details
-      modalContent += `
-        <h4>Location</h4>
-        <p class="listing-description">${listing.Location}</p>
-      `;
-      
-      // Action buttons
-      modalContent += `
-        <div class="action-buttons">
-          <button class="action-button btn-primary" onclick="contactAgentFor('${listing._id}')">Contact Agent</button>
-          <button class="action-button btn-secondary" onclick="scheduleViewing('${listing._id}')">Schedule Viewing</button>
-          <button class="action-button btn-secondary" onclick="addToFavorites('${listing._id}')">Add to Favorites</button>
-        </div>
-      `;
-      
-      // Set the content
-      modalBody.innerHTML = modalContent;
-      
-      // Show the modal
-      modal.style.display = 'block';
-      
-      // Prevent body scrolling when modal is open
-      document.body.style.overflow = 'hidden';
-    }
-    
     function closeModal() {
       const modal = document.getElementById('listingModal');
       modal.style.display = 'none';
@@ -542,14 +446,38 @@
       const rooms = document.getElementById('rooms');
       const verified = document.getElementById('verified');
       const resultsContainer = document.getElementById('searchResults');
+      const listingTypeOptions = document.getElementsByName('listingType');
       
       async function fetchListings(filters = {}) {
         try {
           const params = new URLSearchParams();
+          
+          // Basic filters
           if (filters.location) params.append('location', filters.location);
-          if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
           if (filters.minPrice) params.append('minPrice', filters.minPrice);
           if (filters.maxPrice) params.append('maxPrice', filters.maxPrice);
+          
+          // Handle listing type (buy/rent)
+          for (const option of listingTypeOptions) {
+            if (option.checked) {
+              params.append('listingType', option.value === 'buy' ? 'purchase' : 'rent');
+              break;
+            }
+          }
+          
+          // Handle bedrooms filter
+          if (filters.bedrooms) params.append('bedrooms', filters.bedrooms);
+          
+          // Optional: handle other schema fields if UI elements exist
+          if (filters.apartmentType) params.append('apartmentType', filters.apartmentType);
+          if (filters.bathrooms) params.append('bathrooms', filters.bathrooms);
+          if (filters.duration) params.append('duration', filters.duration);
+          if (filters.size) params.append('size', filters.size);
+          
+          // Add verified filter if checked
+          if (verified.checked) {
+            params.append('verified', true);
+          }
           
           const response = await fetch(`/api/listings?${params.toString()}`);
           
@@ -566,14 +494,32 @@
             // Store listing data as data attribute for later use
             listingCard.dataset.listingData = JSON.stringify(listing);
             
+            // Determine if it's for rent or purchase
+            const listingTypeLabel = listing.listingType === 'rent' ? 'For Rent' : 'For Sale';
+            
+            // Format price based on listing type
+            const priceDisplay = listing.listingType === 'rent' 
+              ? `€${listing.price?.toLocaleString() || 'Price on request'}/month` 
+              : `€${listing.price?.toLocaleString() || 'Price on request'}`;
+            
+            // Create additional details string
+            let details = `${listing.bedrooms || 'N/A'} beds | ${listing.bathrooms || 'N/A'} baths`;
+            if (listing.size) {
+              details += ` | ${listing.size}`;
+            }
+            if (listing.apartmentType) {
+              details += ` | ${listing.apartmentType.charAt(0).toUpperCase() + listing.apartmentType.slice(1)}`;
+            }
+            
             listingCard.innerHTML = `
-              <img src="${listing.Photos?.[0] || 'https://via.placeholder.com/400x300?text=Property+Image'}" 
-                   alt="${listing.Location}" class="property-image">
+              <img src="${listing.photos?.[0] || 'https://via.placeholder.com/400x300?text=Property+Image'}" 
+                   alt="${listing.location}" class="property-image">
               <div class="property-info">
-                <h3>${listing.Location}</h3>
-                <div class="property-price">€${listing.Price?.toLocaleString() || 'Price on request'}</div>
-                <div class="property-details">${listing.Bedrooms || 'N/A'} beds | ${listing.Bathrooms || 'N/A'} baths</div>
-                <p>${listing.Description?.substring(0, 100) || 'No description available'}${listing.Description?.length > 100 ? '...' : ''}</p>
+                <span style="background-color: #3a6ee8; color: white; padding: 3px 8px; border-radius: 4px; font-size: 12px;">${listingTypeLabel}</span>
+                <h3>${listing.location}</h3>
+                <div class="property-price">${priceDisplay}</div>
+                <div class="property-details">${details}</div>
+                <p>${listing.description?.substring(0, 100) || 'No description available'}${listing.description?.length > 100 ? '...' : ''}</p>
               </div>
             `;
             
@@ -599,8 +545,10 @@
         }
       }
       
+      // Initialize with default listings
       fetchListings();
       
+      // Handle search button click
       searchButton.addEventListener('click', function() {
         const filters = {
           location: filterLocation.value.trim() || searchText.value.trim(),
@@ -612,6 +560,7 @@
         fetchListings(filters);
       });
       
+      // Handle enter key in search text field
       searchText.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
           const filters = {
@@ -620,6 +569,145 @@
           fetchListings(filters);
         }
       });
+      
+      // Update modal function to handle the schema fields correctly
+      window.openModal = function(listing) {
+        const modal = document.getElementById('listingModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        
+        // Set title
+        modalTitle.textContent = listing.location || 'Property Details';
+        
+        // Create modal content
+        let modalContent = '';
+        
+        // Main image
+        const mainImage = listing.photos && listing.photos.length ? listing.photos[0] : 'https://via.placeholder.com/800x500?text=Property+Image';
+        modalContent += `<img src="${mainImage}" alt="${listing.location}" class="main-image">`;
+        
+        // Photo gallery (if multiple photos)
+        if (listing.photos && listing.photos.length > 1) {
+          modalContent += '<div class="modal-gallery">';
+          listing.photos.forEach(photo => {
+            modalContent += `<img src="${photo}" alt="${listing.location}" onclick="updateMainImage(this.src)">`;
+          });
+          modalContent += '</div>';
+        }
+        
+        // Key details
+        modalContent += '<div class="listing-details">';
+        
+        // Price based on listing type
+        const priceDisplay = listing.listingType === 'rent' 
+          ? `€${listing.price?.toLocaleString() || 'Price on request'}/month` 
+          : `€${listing.price?.toLocaleString() || 'Price on request'}`;
+        
+        modalContent += `
+          <div class="detail-item">
+            <div class="detail-value">${priceDisplay}</div>
+            <div class="detail-label">Price</div>
+          </div>
+        `;
+        
+        // Listing type
+        modalContent += `
+          <div class="detail-item">
+            <div class="detail-value">${listing.listingType === 'rent' ? 'For Rent' : 'For Sale'}</div>
+            <div class="detail-label">Listing Type</div>
+          </div>
+        `;
+        
+        // Apartment type
+        if (listing.apartmentType) {
+          modalContent += `
+            <div class="detail-item">
+              <div class="detail-value">${listing.apartmentType.charAt(0).toUpperCase() + listing.apartmentType.slice(1)}</div>
+              <div class="detail-label">Property Type</div>
+            </div>
+          `;
+        }
+        
+        // Bedrooms
+        modalContent += `
+          <div class="detail-item">
+            <div class="detail-value">${listing.bedrooms || 'N/A'}</div>
+            <div class="detail-label">Bedrooms</div>
+          </div>
+        `;
+        
+        // Bathrooms
+        modalContent += `
+          <div class="detail-item">
+            <div class="detail-value">${listing.bathrooms || 'N/A'}</div>
+            <div class="detail-label">Bathrooms</div>
+          </div>
+        `;
+        
+        // Size
+        if (listing.size) {
+          modalContent += `
+            <div class="detail-item">
+              <div class="detail-value">${listing.size}</div>
+              <div class="detail-label">Size</div>
+            </div>
+          `;
+        }
+        
+        // Duration (only for rent)
+        if (listing.listingType === 'rent' && listing.duration) {
+          modalContent += `
+            <div class="detail-item">
+              <div class="detail-value">${listing.duration}</div>
+              <div class="detail-label">Rental Duration</div>
+            </div>
+          `;
+        }
+        
+        modalContent += '</div>';
+        
+        // Description
+        if (listing.description) {
+          modalContent += `
+            <h4>Description</h4>
+            <p class="listing-description">${listing.description}</p>
+          `;
+        }
+        
+        // Location details
+        modalContent += `
+          <h4>Location</h4>
+          <p class="listing-description">${listing.location}</p>
+        `;
+        
+        // Show created date
+        if (listing.createdAt) {
+          const listingDate = new Date(listing.createdAt);
+          modalContent += `
+            <p style="color: #666; font-size: 12px; margin-top: 20px;">
+              Listed on: ${listingDate.toLocaleDateString()}
+            </p>
+          `;
+        }
+        
+        // Action buttons
+        modalContent += `
+          <div class="action-buttons">
+            <button class="action-button btn-primary" onclick="contactAgentFor('${listing._id}')">Contact Agent</button>
+            <button class="action-button btn-secondary" onclick="scheduleViewing('${listing._id}')">Schedule Viewing</button>
+            <button class="action-button btn-secondary" onclick="addToFavorites('${listing._id}')">Add to Favorites</button>
+          </div>
+        `;
+        
+        // Set the content
+        modalBody.innerHTML = modalContent;
+        
+        // Show the modal
+        modal.style.display = 'block';
+        
+        // Prevent body scrolling when modal is open
+        document.body.style.overflow = 'hidden';
+      };
     });
   </script>
   <script>
