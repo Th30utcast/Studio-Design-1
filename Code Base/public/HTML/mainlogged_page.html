@@ -45,17 +45,17 @@
   
     <!-- Address Fields -->
     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-      <input type="text" id="country" placeholder="Country" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-      <input type="text" id="state" placeholder="State" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-      <input type="text" id="city" placeholder="City" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-      <input type="text" id="postalCode" placeholder="Zip Code" style="flex: 1; padding: 10px; border-radius: 6px; border: none;"/>
+      <input type="text" id="filterCountry" placeholder="Country" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      <input type="text" id="filterState" placeholder="State" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      <input type="text" id="filterCity" placeholder="City" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      <input type="text" id="filterPostalCode" placeholder="Zip Code" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
     </div>
   
     <!-- Price, Apartment Type, Rooms -->
     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
       <input type="number" id="minPrice" placeholder="Min Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
       <input type="number" id="maxPrice" placeholder="Max Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-      <select id="apartmentType" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      <select id="filterApartmentType" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
         <option value="">Apartment Type</option>
         <option value="residential">Residential</option>
         <option value="commercial">Commercial</option>
@@ -70,7 +70,7 @@
     </div>
   
     <!-- Duration (only if Rent is selected) -->
-    <input type="text" id="duration" placeholder="Rent Duration (e.g. 6 months)" style="padding: 10px; border-radius: 6px; border: none; display: none;">
+    <input type="text" id="filterDuration" placeholder="Rent Duration (e.g. 6 months)" style="padding: 10px; border-radius: 6px; border: none; display: none;">
   
     <!-- Verified Checkbox -->
     <label style="color: white;">
