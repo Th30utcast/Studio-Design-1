@@ -1,0 +1,68 @@
+[{
+  "_id": {
+    "$oid": "68124cd0c5de5bc65887c354"
+  },
+  "firstName": "Ayman",
+  "lastName": "Kandouli",
+  "phoneNumber": "",
+  "address": "Plagwitz",
+  "email": "example1@gmail.com",
+  "password": "$2b$10$Z.fRXF/YWr2Okh9UKzA2X.fn3tnRaramGF02YSD6wpwg1XnMzG5bC",
+  "userType": "seller",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/1746031231258-WIN_20240607_14_16_15_Pro.jpg",
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681253816a2cce88b54b8292"
+  },
+  "firstName": "Saeed",
+  "lastName": "Kabak",
+  "phoneNumber": "123",
+  "address": "",
+  "email": "example2@gmail",
+  "password": "$2b$10$aK9/QMsmgj0NlfuG.hq8oOYHKuAG0lZY3icOoLPdYpGAH7qRXgAia",
+  "userType": "buyer",
+  "membership": "silver",
+  "isVerified": true,
+  "photo": "/uploads/1746032418157-WIN_20240607_14_16_15_Pro.jpg",
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68125b25e04fc38e6fc01093"
+  },
+  "firstName": "pepe",
+  "lastName": "burito",
+  "phoneNumber": "123",
+  "address": "",
+  "email": "dom@gmail.com",
+  "password": "$2b$10$ut87LV3OMHtGYN5g3WO3WObm2WZfFgIUkzX67h6DAh0/iIHDbB5kG",
+  "userType": "buyer",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/1746033489274-WIN_20240607_14_16_15_Pro.jpg",
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68126605b19aa3c15c559f2b"
+  },
+  "firstName": "Saeid",
+  "lastName": "Kabak",
+  "phoneNumber": "015254730933",
+  "address": "Prager Straße 53, Basecamp Leipzig,",
+  "email": "example5@gmail.com",
+  "password": "$2b$10$bn3E4gPU7nJgzRXoDKyGjui.xJ.2BR.uV28Zmo6ur./eo2BspYXc6",
+  "userType": "seller",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "",
+  "loginAttempts": [],
+  "__v": 0
+}]
