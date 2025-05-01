@@ -1,0 +1,91 @@
+[{
+  "_id": {
+    "$oid": "68124d18c5de5bc65887c35a"
+  },
+  "sellerId": {
+    "$oid": "68124cd0c5de5bc65887c354"
+  },
+  "listingType": "rent",
+  "apartmentType": "residential",
+  "duration": "6 months",
+  "price": 600,
+  "size": "120",
+  "bedrooms": 3,
+  "bathrooms": 4,
+  "location": "Plagwitz",
+  "description": "Hello",
+  "photos": [],
+  "createdAt": {
+    "$date": "2025-04-30T16:17:28.153Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6812618fb19aa3c15c559f1e"
+  },
+  "sellerId": {
+    "$oid": "68124cd0c5de5bc65887c354"
+  },
+  "listingType": "purchase",
+  "apartmentType": "residential",
+  "price": 200000,
+  "size": "120",
+  "bedrooms": 3,
+  "bathrooms": 3,
+  "location": "Saudi Arabia, AL Khobar",
+  "description": "Luxury Villa in the heart of the city",
+  "photos": [
+    "/uploads/1746035087940-saudi1.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-04-30T17:44:47.955Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68126634b19aa3c15c559f32"
+  },
+  "sellerId": {
+    "$oid": "68124cd0c5de5bc65887c354"
+  },
+  "listingType": "purchase",
+  "apartmentType": "residential",
+  "price": 2345678,
+  "size": "110",
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "location": "Saudi Arabia, Dammam",
+  "description": "Nive cilla",
+  "photos": [],
+  "createdAt": {
+    "$date": "2025-04-30T18:04:36.498Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68127725fbd94780740f8267"
+  },
+  "sellerId": {
+    "$oid": "68126605b19aa3c15c559f2b"
+  },
+  "listingType": "purchase",
+  "apartmentType": "residential",
+  "price": 5667889,
+  "size": "235",
+  "bedrooms": 3,
+  "bathrooms": 3,
+  "location": "Beirut, Lebanon",
+  "description": "nice stuff",
+  "photos": [
+    "/uploads/1746040613532-saudi1.jpg",
+    "/uploads/1746040613533-saudi2.jpg",
+    "/uploads/1746040613535-saudi3.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-04-30T19:16:53.546Z"
+  },
+  "__v": 0
+}]
