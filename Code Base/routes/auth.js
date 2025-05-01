@@ -137,16 +137,23 @@ router.post('/upload-id', upload.single('idDocument'), async (req, res) => {
 // ========================= UPGRADE MEMBERSHIP =========================
 router.post('/upgrade-membership', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, newPlan } = req.body;
+    if (!['gold', 'silver'].includes(newPlan)) {
+      return res.status(400).send("Invalid plan type.");
+    }
 
-    await User.updateOne({ email }, { membership: "gold" });
+    const result = await User.updateOne({ email }, { membership: newPlan });
+    if (result.modifiedCount === 0) {
+      return res.status(400).send("No changes were made. Check if the email is correct.");
+    }
 
-    res.status(200).send("Membership upgraded to Gold.");
+    res.status(200).send("Membership updated successfully.");
   } catch (err) {
-    console.error("Membership upgrade error:", err);
+    console.error("Membership change error:", err);
     res.status(500).send("Server error.");
   }
 });
+
 // ========================= UPDATE USER INFO =========================
 router.post('/update-info', upload.single('profilePicture'), async (req, res) => {
   try {

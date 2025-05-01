@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upgrade Plan - HomeQuest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../CSS/payment_style.css" />
+</head>
+<body>
+  <header>
+    <a href="mainlogged_page.html" class="logo">HomeQuest</a>
+    <nav>
+      <a href="mainlogged_page.html">Home</a>
+      <a href="account_page.html">Account</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Payment Details</h2>
+    <p id="planSummary" style="text-align: center; margin-bottom: 20px; font-size: 16px; color: #ccc;"></p>
+
+    <form>
+      <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" required pattern="\d{4}\s?\d{4}\s?\d{4}\s?\d{4}">
+      </div>
+
+      <div class="form-group">
+        <label for="expiry">Expiry Date</label>
+        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/\d{2}">
+      </div>
+
+      <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" name="cvv" placeholder="123" required pattern="\d{3}">
+      </div>
+
+      <button type="submit" class="btn">Confirm Plan Change</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 HomeQuest. All rights reserved.</p>
+  </footer>
+
+  <div id="loadingOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center;">
+    <div class="spinner"></div>
+</div>
+
+<script src="../JS/payment_page.js"></script>
+</body>
+</html>
