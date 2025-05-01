@@ -10,8 +10,14 @@ const listingSchema = new mongoose.Schema({
   size: { type: String }, // e.g. "120 sqm"
   bedrooms: Number,
   bathrooms: Number,
-  location: { type: String, required: true },
-  description: String,
+  location: {
+    street: { type: String },
+    city: { type: String, required: true },
+    state: { type: String },
+    postalCode: { type: String },
+    country: { type: String, required: true }
+  },
+    description: String,
   photos: [String],
   createdAt: { type: Date, default: Date.now }
 });

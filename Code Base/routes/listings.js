@@ -1,56 +1,61 @@
 const express = require('express');
 const router = express.Router();
-
 const multer = require('multer');
 const User = require('../models/User');
 const Listing = require('../models/Listing');
 
-// Configure Multer for image uploads
+// Multer config
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, 'public/uploads/');
   },
-  filename: function (req, file, cb) {
+  filename: (req, file, cb) => {
     cb(null, Date.now() + '-' + file.originalname);
   }
 });
+const upload = multer({ storage });
 
-const upload = multer({ storage: storage });
-
-// GET /api/listings - Filtered or all listings
+// GET /api/listings - fetch with filters
 router.get('/', async (req, res) => {
   try {
     const { listingType, location, minPrice, maxPrice, bedrooms } = req.query;
-
     const filters = {};
+
     if (listingType) filters.listingType = listingType;
-    if (location) filters.location = new RegExp(location, 'i');
+
+    if (location) {
+      filters["location.city"] = new RegExp(location, 'i'); // case-insensitive partial match
+    }
+
     if (minPrice || maxPrice) {
       filters.price = {};
       if (minPrice) filters.price.$gte = Number(minPrice);
       if (maxPrice) filters.price.$lte = Number(maxPrice);
     }
+
     if (bedrooms) filters.bedrooms = { $gte: Number(bedrooms) };
 
     const listings = await Listing.find(filters);
     res.json(listings);
   } catch (err) {
+    console.error("Fetch error:", err);
     res.status(500).json({ error: 'Failed to fetch listings' });
   }
 });
 
-// GET /api/listings/:id - Single listing details
+// GET /api/listings/:id - single listing
 router.get('/:id', async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
     if (!listing) return res.status(404).json({ error: 'Listing not found' });
     res.json(listing);
   } catch (err) {
+    console.error("Single fetch error:", err);
     res.status(500).json({ error: 'Failed to fetch listing' });
   }
 });
 
-// POST /api/listings/add - Add a new listing
+// POST /api/listings/add - add new listing
 router.post('/add', upload.array('photos', 5), async (req, res) => {
   try {
     const {
@@ -62,20 +67,25 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
       size,
       bedrooms,
       bathrooms,
-      location,
       description
     } = req.body;
+
+    let location = {};
+    try {
+      location = JSON.parse(req.body.location);
+    } catch (parseErr) {
+      return res.status(400).json({ error: 'Invalid location format. Expecting JSON.' });
+    }
 
     const user = await User.findById(sellerId);
     if (!user || user.userType !== 'seller') {
       return res.status(403).json({ error: 'Only sellers can add listings.' });
     }
 
-    // Listing limit check
     if (user.membership !== 'gold') {
       const listingCount = await Listing.countDocuments({ sellerId });
       if (listingCount >= 3) {
-        return res.status(400).json({ error: 'You have reached the listing limit for your membership plan.' });
+        return res.status(400).json({ error: 'Listing limit reached for Silver members.' });
       }
     }
 
