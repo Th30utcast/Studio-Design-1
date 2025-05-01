@@ -1,83 +1,172 @@
+// ==================== FILTER & MODAL FUNCTIONS ====================
+function toggleFilters() {
+  const filterSection = document.getElementById("filterOptions");
+  const toggleBtn = document.getElementById("filterToggleBtn");
+  if (!filterSection || !toggleBtn) return;
+
+  const isVisible = filterSection.style.display === "flex";
+  filterSection.style.display = isVisible ? "none" : "flex";
+  toggleBtn.innerHTML = isVisible ? "\u2699 Filters" : "\u2699 Hide Filters";
+}
+
+function closeModal() {
+  const modal = document.getElementById("listingModal");
+  if (modal) {
+    modal.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+}
+
+function updateMainImage(src) {
+  const mainImage = document.querySelector(".main-image");
+  if (mainImage) mainImage.src = src;
+}
+
+function contactAgentFor(listingId) {
+  window.location.href = `contact_agent.html?listing=${listingId}`;
+}
+
+function scheduleViewing(listingId) {
+  window.location.href = `appointment_page.html?listing=${listingId}`;
+}
+
+function addToFavorites(listingId) {
+  alert("Add to favorites feature will be implemented soon!");
+}
+
+function openModal(listing) {
+  const modal = document.getElementById("listingModal");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalBody = document.getElementById("modalBody");
+  if (!modal || !modalTitle || !modalBody) return;
+
+  modalTitle.textContent = listing.location?.city || "Property Details";
+  let modalContent = "";
+
+  const mainImage = listing.photos?.[0] || "https://via.placeholder.com/800x500?text=Property+Image";
+  modalContent += `<img src="${mainImage}" alt="${listing.location?.city}" class="main-image">`;
+
+  if (listing.photos?.length > 1) {
+    modalContent += '<div class="modal-gallery">';
+    listing.photos.forEach(photo => {
+      modalContent += `<img src="${photo}" alt="" onclick="updateMainImage(this.src)">`;
+    });
+    modalContent += '</div>';
+  }
+
+  modalContent += `
+    <div class="listing-details">
+      <div class="detail-item">
+        <div class="detail-value">€${listing.price?.toLocaleString() || 'N/A'}</div>
+        <div class="detail-label">Price</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-value">${listing.bedrooms || '?'}</div>
+        <div class="detail-label">Bedrooms</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-value">${listing.bathrooms || '?'}</div>
+        <div class="detail-label">Bathrooms</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-value">${listing.size || 'N/A'}</div>
+        <div class="detail-label">Size</div>
+      </div>
+    </div>
+    <h4>Description</h4>
+    <p class="listing-description">${listing.description || 'No description available.'}</p>
+    <h4>Location</h4>
+    <p class="listing-description">
+      ${listing.location?.street || ''}, 
+      ${listing.location?.city || ''}, 
+      ${listing.location?.state || ''}, 
+      ${listing.location?.postalCode || ''}, 
+      ${listing.location?.country || ''}
+    </p>
+    <div class="action-buttons">
+      <button class="action-button btn-primary" onclick="contactAgentFor('${listing._id}')">Contact Agent</button>
+      <button class="action-button btn-secondary" onclick="scheduleViewing('${listing._id}')">Schedule Viewing</button>
+      <button class="action-button btn-secondary" onclick="addToFavorites('${listing._id}')">Add to Favorites</button>
+    </div>
+  `;
+
+  modalBody.innerHTML = modalContent;
+  modal.style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+
+window.onclick = function (event) {
+  const modal = document.getElementById("listingModal");
+  if (event.target === modal) closeModal();
+};
+
+// ==================== MAIN PAGE INIT ====================
 document.addEventListener("DOMContentLoaded", () => {
+  const userType = localStorage.getItem("userType");
   const menuToggle = document.getElementById("menuToggle");
   const dropdownMenu = document.getElementById("dropdownMenu");
+  const addListingItem = document.getElementById("addListingMenuItem");
 
+  // Show Add Listings only if user is a seller
+  if (userType === "seller" && addListingItem) {
+    addListingItem.style.display = "block";
+  }
+
+  // Toggle dropdown on icon click
   if (menuToggle && dropdownMenu) {
-    menuToggle.addEventListener("click", () => {
-      dropdownMenu.style.display = dropdownMenu.style.display === "flex" ? "none" : "flex";
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent immediate close
+      const isVisible = dropdownMenu.style.display === "flex";
+      dropdownMenu.style.display = isVisible ? "none" : "flex";
     });
 
+    // Close dropdown if clicked outside
     document.addEventListener("click", (e) => {
       if (!dropdownMenu.contains(e.target) && e.target !== menuToggle) {
         dropdownMenu.style.display = "none";
       }
     });
   }
+});
 
-  const userType = localStorage.getItem("userType");
-  const addListingMenuItem = document.getElementById("addListingMenuItem");
-  
-  if (userType === "seller" && addListingMenuItem) {
-    addListingMenuItem.style.display = "block";
-  }
-  
 
-  // Search Button Handler
+  // Search button behavior
   const searchButton = document.getElementById("searchButton");
   if (searchButton) {
     searchButton.addEventListener("click", () => {
       const filters = {
-        country: document.getElementById("country")?.value.trim(),
-        state: document.getElementById("state")?.value.trim(),
-        city: document.getElementById("city")?.value.trim(),
-        postalCode: document.getElementById("zip")?.value.trim(),
+        country: document.getElementById("filterCountry")?.value.trim(),
+        state: document.getElementById("filterState")?.value.trim(),
+        city: document.getElementById("filterCity")?.value.trim(),
+        postalCode: document.getElementById("postalCode")?.value.trim(),
         minPrice: document.getElementById("minPrice")?.value,
         maxPrice: document.getElementById("maxPrice")?.value,
-        apartmentType: document.getElementById("apartmentType")?.value,
         bedrooms: document.getElementById("rooms")?.value,
-        duration: document.getElementById("duration")?.value,
-        listingType: [...document.getElementsByName("listingType")].find(r => r.checked)?.value === "buy" ? "purchase" : "rent",
+        duration: document.getElementById("filterDuration")?.value,
+        apartmentType: document.getElementById("filterApartmentType")?.value,
+        listingType: document.querySelector('input[name="listingType"]:checked')?.value === "buy" ? "purchase" : "rent",
         verified: document.getElementById("verified")?.checked
       };
       fetchListings(filters);
     });
   }
 
-  fetchListings(); // Initial load
-});
+fetchListings();
 
-// Toggles the rent duration field visibility
-function toggleDuration() {
-  const rentRadio = document.querySelector('input[name="listingType"][value="rent"]');
-  const durationField = document.getElementById("duration");
-  if (rentRadio && durationField) {
-    durationField.style.display = rentRadio.checked ? "block" : "none";
-    if (!rentRadio.checked) durationField.value = "";
-  }
-}
 
-// Fetch and render listings based on filters
+// ==================== FETCH LISTINGS ====================
 async function fetchListings(filters = {}) {
   try {
     const resultsContainer = document.getElementById("searchResults");
     if (!resultsContainer) return;
 
     const params = new URLSearchParams();
-    if (filters.country) params.append("country", filters.country);
-    if (filters.state) params.append("state", filters.state);
-    if (filters.city) params.append("city", filters.city);
-    if (filters.postalCode) params.append("postalCode", filters.postalCode);
-    if (filters.minPrice) params.append("minPrice", filters.minPrice);
-    if (filters.maxPrice) params.append("maxPrice", filters.maxPrice);
-    if (filters.apartmentType) params.append("apartmentType", filters.apartmentType);
-    if (filters.bedrooms) params.append("bedrooms", filters.bedrooms);
-    if (filters.duration) params.append("duration", filters.duration);
-    if (filters.listingType) params.append("listingType", filters.listingType);
-    if (filters.verified) params.append("verified", true);
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) params.append(key, value);
+    });
 
     const res = await fetch(`/api/listings?${params.toString()}`);
     const listings = await res.json();
-
     resultsContainer.innerHTML = "";
 
     if (!Array.isArray(listings) || listings.length === 0) {
@@ -106,89 +195,3 @@ async function fetchListings(filters = {}) {
     console.error("Failed to load listings:", err);
   }
 }
-
-// Modal display functions
-function openModal(listing) {
-  const modal = document.getElementById("listingModal");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalBody = document.getElementById("modalBody");
-
-  if (!modal || !modalTitle || !modalBody) return;
-
-  modalTitle.textContent = listing.location?.city || 'Property Details';
-  let modalContent = `
-    <img src="${listing.photos?.[0] || 'https://via.placeholder.com/800x500?text=Property+Image'}" class="main-image">
-  `;
-
-  if (listing.photos?.length > 1) {
-    modalContent += '<div class="modal-gallery">';
-    listing.photos.forEach(photo => {
-      modalContent += `<img src="${photo}" onclick="updateMainImage(this.src)">`;
-    });
-    modalContent += '</div>';
-  }
-
-  modalContent += `
-    <div class="listing-details">
-      <div class="detail-item"><div class="detail-value">€${listing.price?.toLocaleString() || 'N/A'}</div><div class="detail-label">Price</div></div>
-      <div class="detail-item"><div class="detail-value">${listing.bedrooms || '?'}</div><div class="detail-label">Bedrooms</div></div>
-      <div class="detail-item"><div class="detail-value">${listing.bathrooms || '?'}</div><div class="detail-label">Bathrooms</div></div>
-      <div class="detail-item"><div class="detail-value">${listing.size || 'N/A'}</div><div class="detail-label">Size</div></div>
-      ${listing.duration ? `<div class="detail-item"><div class="detail-value">${listing.duration}</div><div class="detail-label">Duration</div></div>` : ''}
-    </div>
-
-    <h4>Description</h4>
-    <p class="listing-description">${listing.description || 'No description available.'}</p>
-
-    <h4>Location</h4>
-    <p class="listing-description">
-      ${listing.location?.street || ""}, 
-      ${listing.location?.city || ""}, 
-      ${listing.location?.state || ""}, 
-      ${listing.location?.postalCode || ""}, 
-      ${listing.location?.country || ""}
-    </p>
-
-    <div class="action-buttons">
-      <button class="action-button btn-primary" onclick="contactAgentFor('${listing._id}')">Contact Agent</button>
-      <button class="action-button btn-secondary" onclick="scheduleViewing('${listing._id}')">Schedule Viewing</button>
-      <button class="action-button btn-secondary" onclick="addToFavorites('${listing._id}')">Add to Favorites</button>
-    </div>
-  `;
-
-  modalBody.innerHTML = modalContent;
-  modal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal() {
-  const modal = document.getElementById("listingModal");
-  if (modal) {
-    modal.style.display = 'none';
-    document.body.style.overflow = 'auto';
-  }
-}
-
-function updateMainImage(src) {
-  const mainImage = document.querySelector('.main-image');
-  if (mainImage) mainImage.src = src;
-}
-
-function contactAgentFor(listingId) {
-  window.location.href = `contact_agent.html?listing=${listingId}`;
-}
-
-function scheduleViewing(listingId) {
-  window.location.href = `appointment_page.html?listing=${listingId}`;
-}
-
-function addToFavorites(listingId) {
-  alert("Add to favorites feature will be implemented soon!");
-}
-
-window.onclick = function (event) {
-  const modal = document.getElementById("listingModal");
-  if (event.target === modal) {
-    closeModal();
-  }
-};
