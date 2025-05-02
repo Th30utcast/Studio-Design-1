@@ -16,72 +16,94 @@
   <div class="dropdown-container">
     <div class="menu-toggle" id="menuToggle">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
-      <a href="main_page.html" data-translate="home">Home</a>
-      <a href="#listings" data-translate="listings">Listings</a>
-      <a href="#about" data-translate="about">About</a>
       <a href="login_page.html" data-translate="login">Login</a>
       <a href="#contact" data-translate="help">Help</a>
     </div>
   </div>
 </header>
 
-  
+<section class="hero">
+  <h1 data-translate="welcome">Find Your Dream Home with HomeQuest</h1>
+  <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 700px; margin: 0 auto;">
+    <input class="search-bar" type="text" id="searchText" placeholder="Search by location, price, or type..." data-translate="search_placeholder" style="flex: 1;">
+    <button id="filterToggleBtn" onclick="toggleFilters()" style="padding: 10px 16px; font-size: 16px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;" data-translate="filters">
+      &#9881; Filters
+    </button>
+  </div>
+</section>
+<div id="filterOptions" style="display: none; max-width: 900px; margin: 20px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
 
-  <section class="hero">
-    <h1 data-translate="welcome">Find Your Dream Home with HomeQuest</h1>
-    <div style="display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 700px; margin: 0 auto;">
-      <input class="search-bar" type="text" id="searchText" placeholder="Search by location, price, or type..." data-translate="search_placeholder" style="flex: 1;">
-      <button id="filterToggleBtn" onclick="toggleFilters()" style="padding: 10px 16px; font-size: 16px; background-color: #3a6ee8; color: white; border: none; border-radius: 8px; cursor: pointer;" data-translate="filters">
-        &#9881; Filters
-      </button>
-    </div>
-  </section>
+  <!-- Buy/Rent Toggle -->
+  <div style="display: flex; justify-content: center; gap: 20px;">
+    <label><input type="radio" name="listingType" value="buy" checked onchange="toggleDuration()"> Buy</label>
+    <label><input type="radio" name="listingType" value="rent" onchange="toggleDuration()"> Rent</label>
+  </div>
 
-  <div id="filterOptions" style="display: none; max-width: 700px; margin: 20px auto 0; background-color: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 15px;">
-    <div style="display: flex; justify-content: center; gap: 20px;">
-      <label><input type="radio" name="listingType" value="buy" checked> <span data-translate="buy">Buy</span></label>
-      <label><input type="radio" name="listingType" value="rent"> <span data-translate="rent">Rent</span></label>
-    </div>
+  <!-- Address Fields -->
+  <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="text" id="filterCountry" placeholder="Country" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+    <input type="text" id="filterState" placeholder="State" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+    <input type="text" id="filterCity" placeholder="City" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+    <input type="text" id="filterPostalCode" placeholder="Zip Code" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+  </div>
 
-    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-      <input type="text" id="filterLocation" placeholder="Location" data-translate="location" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-      <input type="number" id="minPrice" placeholder="Min Price (€)" data-translate="min_price" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-      <input type="number" id="maxPrice" placeholder="Max Price (€)" data-translate="max_price" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
-    </div>
-
-    <select id="rooms" style="padding: 10px; border-radius: 6px; border: none;">
-      <option value="" data-translate="rooms">Number of Rooms</option>
+  <!-- Price, Apartment Type, Rooms -->
+  <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <input type="number" id="minPrice" placeholder="Min Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+    <input type="number" id="maxPrice" placeholder="Max Price (€)" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+    <select id="filterApartmentType" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      <option value="">Apartment Type</option>
+      <option value="residential">Residential</option>
+      <option value="commercial">Commercial</option>
+    </select>
+    <select id="rooms" style="flex: 1; padding: 10px; border-radius: 6px; border: none;">
+      <option value="">Number of Rooms</option>
       <option value="1">1+</option>
       <option value="2">2+</option>
       <option value="3">3+</option>
       <option value="4">4+</option>
     </select>
-
-    <label style="color: white;">
-      <input type="checkbox" id="verified"> <span data-translate="verified">Verified Properties Only</span>
-    </label>
-
-    <button id="searchButton" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;" data-translate="search">
-      Search
-    </button>
   </div>
 
-  <section class="section" id="listings">
-    <h2 data-translate="featured">Featured Listings</h2>
-    <div class="search-results" id="searchResults"></div>
-  </section>
+  <!-- Duration (only if Rent is selected) -->
+  <input type="text" id="filterDuration" placeholder="Rent Duration (e.g. 6 months)" style="padding: 10px; border-radius: 6px; border: none; display: none;">
 
-  <section class="section" id="about">
-    <h2 data-translate="about">About</h2>
-    <p data-translate="browse">Browse listings, connect with agents, and schedule viewings all in one place.</p>
-  </section>
+  <!-- Verified Checkbox -->
+  <label style="color: white;">
+    <input type="checkbox" id="verified"> Verified Properties Only
+  </label>
 
-  <footer id="contact">
-    <p data-translate="copyright">&copy; 2025 HomeQuest. All rights reserved.</p>
-  </footer>
+  <button id="searchButton" style="padding: 12px; background-color: #3a6ee8; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+    Search
+  </button>
+</div>
 
-  <script src="translations.js"></script>
-  <script src="language-switcher.js"></script>
-  <script src="../JS/main_page_scripts.js"></script>
+<section class="section" id="listings">
+  <h2 data-translate="featured">Featured Listings</h2>
+  <div class="search-results" id="searchResults">
+    <!-- Results will be populated here -->
+  </div>
+</section>
+
+<div id="listingModal" class="listing-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle">Property Details</h3>
+      <button class="close-modal" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Content inserted by JS -->
+    </div>
+  </div>
+</div>
+
+<section class="section" id="about">
+  <h2 data-translate="about">About</h2>
+  <p data-translate="browse"></p>
+</section>
+
+<script src="translations.js"></script>
+<script src="language-switcher.js"></script>
+<script src="../JS/main_page_scripts.js"></script>
 </body>
 </html>
