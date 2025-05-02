@@ -17,6 +17,8 @@
 
   <div class="container">
     <h2 data-translate="login">Login</h2>
+
+    <!-- LOGIN FORM -->
     <form id="loginForm">
       <div class="form-group">
         <label for="email" data-translate="email">Email</label>
@@ -30,15 +32,22 @@
 
       <button type="submit" data-translate="login">Login</button>
     </form>
-  </div>
+
+    <!-- Add this after the password field -->
+    <div id="twoFASection" style="display: none; margin-top: 20px;">
+      <label for="twoFACode">Enter 6-digit code sent to your phone:</label>
+      <input type="text" id="twoFACode" maxlength="6" placeholder="e.g. 123456" />
+      <button id="verify2FABtn" type="button" style="margin-top: 10px;">Verify Code</button>
+    </div>
+
 
   <p style="text-align: center; margin-top: 15px;">
     Don’t have an account?
     <a href="register_page.html" style="color: #3a6ee8; text-decoration: underline;">Sign up</a>
   </p>
-  
+
   <script src="../JS/language-switcher.js"></script>
   <script src="../JS/translations.js"></script>
-  <script src="../JS/login_scripts.js"></script>  
+  <script src="../JS/login_scripts.js"></script>
 </body>
 </html>
