@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Listing - HomeQuest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../CSS/mainlogged_page_styles.css" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0C1E3D;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #3a6ee8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #2f5ec1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">HomeQuest</div>
+    <nav>
+      <a href="seller_dashboard.html">Dashboard</a>
+      <a href="account_page.html">Account</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Edit Listing</h2>
+    <form id="editForm">
+      <input type="hidden" id="listingId" />
+
+      <div class="form-group">
+        <label for="price">Price (€)</label>
+        <input type="number" id="price" required />
+      </div>
+
+      <div class="form-group">
+        <label for="duration">Rent Duration (if applicable)</label>
+        <input type="text" id="duration" />
+      </div>
+
+      <div class="form-group">
+        <label for="size">Size (e.g. 120 sqm)</label>
+        <input type="text" id="size" />
+      </div>
+
+      <div class="form-group">
+        <label for="bedrooms">Bedrooms</label>
+        <input type="number" id="bedrooms" />
+      </div>
+
+      <div class="form-group">
+        <label for="bathrooms">Bathrooms</label>
+        <input type="number" id="bathrooms" />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description"></textarea>
+      </div>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+
+  <script src="../JS/edit_listing_scripts.js"></script>
+</body>
+</html>

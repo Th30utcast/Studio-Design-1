@@ -140,5 +140,38 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
     res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
+// PUT /api/listings/:id - Update an existing listing
+router.put('/:id', async (req, res) => {
+  try {
+    const listingId = req.params.id;
+    const {
+      price,
+      duration,
+      size,
+      bedrooms,
+      bathrooms,
+      description
+    } = req.body;
+
+    const updatedFields = {};
+    if (price) updatedFields.price = price;
+    if (duration) updatedFields.duration = duration;
+    if (size) updatedFields.size = size;
+    if (bedrooms) updatedFields.bedrooms = bedrooms;
+    if (bathrooms) updatedFields.bathrooms = bathrooms;
+    if (description) updatedFields.description = description;
+
+    const updated = await Listing.findByIdAndUpdate(listingId, { $set: updatedFields }, { new: true });
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Listing not found.' });
+    }
+
+    res.status(200).json({ message: 'Listing updated successfully.', listing: updated });
+  } catch (err) {
+    console.error("Update listing error:", err);
+    res.status(500).json({ error: 'Failed to update listing.' });
+  }
+});
 
 module.exports = router;

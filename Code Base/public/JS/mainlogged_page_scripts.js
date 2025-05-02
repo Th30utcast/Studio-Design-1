@@ -100,6 +100,18 @@ window.onclick = function (event) {
   if (event.target === modal) closeModal();
 };
 
+
+document.addEventListener("DOMContentLoaded", () => {
+  const userType = localStorage.getItem("userType");
+  const addListingItem = document.getElementById("addListingMenuItem");
+  const dashboardItem = document.getElementById("dashboardMenuItem");
+
+  if (userType === "seller") {
+    if (addListingItem) addListingItem.style.display = "block";
+    if (dashboardItem) dashboardItem.style.display = "block";
+  }
+});
+
 // ==================== MAIN PAGE INIT ====================
 document.addEventListener("DOMContentLoaded", () => {
   const userType = localStorage.getItem("userType");
@@ -126,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dropdownMenu.style.display = "none";
       }
     });
+    
   }
 });
 
