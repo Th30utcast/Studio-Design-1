@@ -20,8 +20,14 @@ document.addEventListener('DOMContentLoaded', function() {
     submitBtn.disabled = true;
     btnText.innerHTML = '<span class="loading"></span> Sending...';
     
+    // Show loading overlay
+    document.getElementById("loadingOverlay").style.display = "flex";
+    
     // Simulate API call with setTimeout
     setTimeout(() => {
+      // Hide loading overlay
+      document.getElementById("loadingOverlay").style.display = "none";
+      
       // Show success message
       showAlert('success', 'Your message has been sent to the agent!');
       contactForm.reset();
