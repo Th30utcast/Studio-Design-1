@@ -1,19 +1,38 @@
 [{
   "_id": {
+    "$oid": "681263634763c1d2a17b68ff"
+  },
+  "firstName": "anas",
+  "lastName": "greek",
+  "phoneNumber": "123",
+  "address": "",
+  "email": "example4@gmail.com",
+  "password": "$2b$10$n6VJyW10UB2C9lu8SUL.EO9Qt3uXg7ZQQdU60qf.BqBLAe.jRcnTu",
+  "userType": "seller",
+  "membership": "silver",
+  "isVerified": true,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
     "$oid": "68124cd0c5de5bc65887c354"
   },
   "firstName": "Ayman",
   "lastName": "Kandouli",
-  "phoneNumber": "",
+  "phoneNumber": "+41763607077",
   "address": "Plagwitz",
   "email": "example1@gmail.com",
   "password": "$2b$10$Z.fRXF/YWr2Okh9UKzA2X.fn3tnRaramGF02YSD6wpwg1XnMzG5bC",
   "userType": "seller",
   "membership": "silver",
   "isVerified": false,
-  "photo": "/uploads/1746031231258-WIN_20240607_14_16_15_Pro.jpg",
+  "photo": "/uploads/default-profile.png",
   "loginAttempts": [],
-  "__v": 0
+  "__v": 0,
+  "dataConsent": true
 },
 {
   "_id": {
@@ -63,6 +82,66 @@
   "membership": "silver",
   "isVerified": false,
   "photo": "",
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681284616e616def8befceb4"
+  },
+  "firstName": "Omar",
+  "lastName": "Mougharbel",
+  "phoneNumber": "123456",
+  "address": "Lebanon",
+  "email": "omariscool@gmail.com",
+  "password": "$2b$10$Ajfr5i5HweVGvRgiSMAiGO46dU6nKV.mGPSEDbbE5JOHF4n2gCmcC",
+  "userType": "buyer",
+  "membership": "silver",
+  "isVerified": true,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681284f16e616def8befcec9"
+  },
+  "firstName": "omar",
+  "lastName": "omar",
+  "phoneNumber": "",
+  "address": "",
+  "email": "example6@gmail.com",
+  "password": "$2b$10$7bgk5REFHJWKmUTQSIn9JO0cRnboGZRkZL/AzG6AT7d7WTezwSXqi",
+  "userType": "seller",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68149e9d30d8cb3185ad2872"
+  },
+  "firstName": "ali",
+  "lastName": "hajj",
+  "phoneNumber": "0782409969",
+  "address": {
+    "street": "Wildenstrasse 1, Wildenstrasse 1",
+    "city": "Schaffhausen",
+    "state": "Neuhausen am Rheinfall",
+    "postalCode": "8121",
+    "country": "Switzerland"
+  },
+  "email": "example12@gmail.com",
+  "password": "$2b$10$WJKzZB9.sckASuU8Er7pee43vtgRC/x9Z/fNrydp5KM8aqtpT.Zsi",
+  "userType": "seller",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
   "loginAttempts": [],
   "__v": 0
 }]

@@ -1,91 +1,210 @@
 [{
   "_id": {
-    "$oid": "68124d18c5de5bc65887c35a"
+    "$oid": "6813b146c304d7a9b6729af8"
+  },
+  "sellerId": {
+    "$oid": "681263634763c1d2a17b68ff"
+  },
+  "listingType": "rent",
+  "apartmentType": "residential",
+  "duration": "6",
+  "price": 2000,
+  "size": "60",
+  "bedrooms": 3,
+  "bathrooms": 2,
+  "location": {
+    "street": "Industriestrasse",
+    "city": "Plagwitz",
+    "state": "Leipzig",
+    "postalCode": "04229",
+    "country": "Germany"
+  },
+  "description": "A wonderful apartment in Plagwitz leipzig",
+  "photos": [
+    "/uploads/1746121030187-istockphoto-1787823171-612x612.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-05-01T17:37:10.191Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6813b9d6c304d7a9b6729b31"
+  },
+  "sellerId": {
+    "$oid": "681284f16e616def8befcec9"
+  },
+  "listingType": "rent",
+  "apartmentType": "residential",
+  "duration": "4",
+  "price": 1233,
+  "size": "32",
+  "bedrooms": 2,
+  "bathrooms": 1,
+  "location": {
+    "street": "hbf",
+    "city": "Leipzig mitte",
+    "state": "Leipzig",
+    "postalCode": "04270",
+    "country": "Germany"
+  },
+  "description": "In hbf",
+  "photos": [
+    "/uploads/1746123222300-csm_Hauptbahnhof_Presse_50e0f5264d.webp"
+  ],
+  "createdAt": {
+    "$date": "2025-05-01T18:13:42.306Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6813bac3c304d7a9b6729b53"
+  },
+  "sellerId": {
+    "$oid": "681284f16e616def8befcec9"
+  },
+  "listingType": "purchase",
+  "apartmentType": "residential",
+  "price": 4000,
+  "size": "200",
+  "bedrooms": 2,
+  "bathrooms": 2,
+  "location": {
+    "street": "praggerstrasse 54",
+    "city": "Leipzig",
+    "state": "Leipzig",
+    "postalCode": "04321",
+    "country": "Germany"
+  },
+  "description": "Modern house in germany",
+  "photos": [
+    "/uploads/1746123459664-wooden-house-by-the-lake-appels-architekten-bavaria-germany-architecture-residential_dezeen_1704_sq-411x411.webp",
+    "/uploads/1746123459664-wooden-house-by-the-lake-bavaria-germany-a260323-f2.webp"
+  ],
+  "createdAt": {
+    "$date": "2025-05-01T18:17:39.670Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6813c7db87725e46a408694a"
+  },
+  "sellerId": {
+    "$oid": "681284f16e616def8befcec9"
+  },
+  "listingType": "rent",
+  "apartmentType": "commercial",
+  "duration": "3",
+  "price": 600,
+  "size": "20",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "location": {
+    "street": "Dohnanyistraße 44",
+    "city": "Frankfurt",
+    "state": "Frankfurt",
+    "postalCode": "45028",
+    "country": "Germany"
+  },
+  "description": "This is in frankfurt",
+  "photos": [
+    "/uploads/1746126811713-imagereader.webp"
+  ],
+  "createdAt": {
+    "$date": "2025-05-01T19:13:31.725Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814a30a30d8cb3185ad289b"
+  },
+  "sellerId": {
+    "$oid": "68124cd0c5de5bc65887c354"
+  },
+  "listingType": "rent",
+  "apartmentType": "commercial",
+  "duration": "",
+  "price": 444,
+  "size": "321",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "location": {
+    "street": "Wildenstrasse",
+    "city": "Schaffhausen",
+    "state": "Neuhausen am Rheinfall",
+    "postalCode": "8121",
+    "country": "Switzerland"
+  },
+  "description": "Hello",
+  "photos": [
+    "/uploads/1746182922065-summer-in-the-alps_chamonix-mont-blanc-haute-savoie-rhone-alpes-france.webp"
+  ],
+  "createdAt": {
+    "$date": "2025-05-02T10:48:42.073Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814a36030d8cb3185ad28a0"
   },
   "sellerId": {
     "$oid": "68124cd0c5de5bc65887c354"
   },
   "listingType": "rent",
   "apartmentType": "residential",
-  "duration": "6 months",
-  "price": 600,
-  "size": "120",
-  "bedrooms": 3,
-  "bathrooms": 4,
-  "location": "Plagwitz",
-  "description": "Hello",
-  "photos": [],
-  "createdAt": {
-    "$date": "2025-04-30T16:17:28.153Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "6812618fb19aa3c15c559f1e"
-  },
-  "sellerId": {
-    "$oid": "68124cd0c5de5bc65887c354"
-  },
-  "listingType": "purchase",
-  "apartmentType": "residential",
-  "price": 200000,
-  "size": "120",
-  "bedrooms": 3,
-  "bathrooms": 3,
-  "location": "Saudi Arabia, AL Khobar",
-  "description": "Luxury Villa in the heart of the city",
-  "photos": [
-    "/uploads/1746035087940-saudi1.jpg"
-  ],
-  "createdAt": {
-    "$date": "2025-04-30T17:44:47.955Z"
-  },
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "68126634b19aa3c15c559f32"
-  },
-  "sellerId": {
-    "$oid": "68124cd0c5de5bc65887c354"
-  },
-  "listingType": "purchase",
-  "apartmentType": "residential",
-  "price": 2345678,
-  "size": "110",
+  "duration": "3",
+  "price": 322,
+  "size": "32",
   "bedrooms": 2,
-  "bathrooms": 2,
-  "location": "Saudi Arabia, Dammam",
-  "description": "Nive cilla",
-  "photos": [],
+  "bathrooms": 1,
+  "location": {
+    "street": "Hotzenweg",
+    "city": "Jestetten",
+    "state": "",
+    "postalCode": "79798",
+    "country": "Germany"
+  },
+  "description": "hello",
+  "photos": [
+    "/uploads/1746183008890-old-wooden-houses-swiss-village-view-traditional-mountainous-switzerland-273354920.webp"
+  ],
   "createdAt": {
-    "$date": "2025-04-30T18:04:36.498Z"
+    "$date": "2025-05-02T10:50:08.894Z"
   },
   "__v": 0
 },
 {
   "_id": {
-    "$oid": "68127725fbd94780740f8267"
+    "$oid": "6814a38430d8cb3185ad28a5"
   },
   "sellerId": {
-    "$oid": "68126605b19aa3c15c559f2b"
+    "$oid": "68124cd0c5de5bc65887c354"
   },
-  "listingType": "purchase",
-  "apartmentType": "residential",
-  "price": 5667889,
-  "size": "235",
-  "bedrooms": 3,
-  "bathrooms": 3,
-  "location": "Beirut, Lebanon",
-  "description": "nice stuff",
+  "listingType": "rent",
+  "apartmentType": "commercial",
+  "duration": "2",
+  "price": 311,
+  "size": "23",
+  "bedrooms": 1,
+  "bathrooms": 1,
+  "location": {
+    "street": "Industriestrasse",
+    "city": "leipzig",
+    "state": "Leipzig",
+    "postalCode": "04229",
+    "country": "Germany"
+  },
+  "description": "Hello",
   "photos": [
-    "/uploads/1746040613532-saudi1.jpg",
-    "/uploads/1746040613533-saudi2.jpg",
-    "/uploads/1746040613535-saudi3.jpg"
+    "/uploads/1746183044078-housing-in-switzerland-1536x1024.webp"
   ],
   "createdAt": {
-    "$date": "2025-04-30T19:16:53.546Z"
+    "$date": "2025-05-02T10:50:44.082Z"
   },
   "__v": 0
 }]
