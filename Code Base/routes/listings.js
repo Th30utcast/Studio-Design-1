@@ -15,6 +15,7 @@ const upload = multer({ storage });
 router.get('/', async (req, res) => {
   try {
     const {
+      sellerId,
       listingType,
       apartmentType,
       country,
@@ -30,13 +31,16 @@ router.get('/', async (req, res) => {
 
     const filters = {};
 
-    // Location filters using strict case-insensitive match
-    if (country) filters["location.country"] = new RegExp(`^${country.trim()}$`, 'i');
-    if (state) filters["location.state"] = new RegExp(`^${state.trim()}$`, 'i');
-    if (city) filters["location.city"] = new RegExp(`^${city.trim()}$`, 'i');
-    if (postalCode) filters["location.postalCode"] = new RegExp(`^${postalCode.trim()}$`, 'i');
+    // Seller-specific
+    if (sellerId) filters.sellerId = sellerId;
 
-    // Price range
+    // Location-based
+    if (country) filters["location.country"] = new RegExp(country, 'i');
+    if (state) filters["location.state"] = new RegExp(state, 'i');
+    if (city) filters["location.city"] = new RegExp(city, 'i');
+    if (postalCode) filters["location.postalCode"] = new RegExp(postalCode, 'i');
+
+    // Price
     if (minPrice || maxPrice) {
       filters.price = {};
       if (minPrice) filters.price.$gte = Number(minPrice);
@@ -47,14 +51,11 @@ router.get('/', async (req, res) => {
     if (bedrooms) filters.bedrooms = { $gte: Number(bedrooms) };
     if (listingType) filters.listingType = listingType;
     if (apartmentType) filters.apartmentType = apartmentType;
-    if (duration && listingType === "rent") {
-      filters.duration = new RegExp(`^${duration.trim()}$`, 'i');
-    }
+    if (duration && listingType === "rent") filters.duration = new RegExp(duration, 'i');
 
-    // Fetch listings
     let listings = await Listing.find(filters).lean();
 
-    // If verified only, filter by seller's verification
+    // If verified=true, filter by seller verification
     if (verified === "true") {
       const verifiedSellerIds = await User.find({ isVerified: true, userType: "seller" }).distinct('_id');
       listings = listings.filter(listing =>
@@ -69,7 +70,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/listings/:id - single listing
+// GET /api/listings/:id
 router.get('/:id', async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
@@ -81,7 +82,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/listings/add - add new listing
+// POST /api/listings/add
 router.post('/add', upload.array('photos', 5), async (req, res) => {
   try {
     const {
