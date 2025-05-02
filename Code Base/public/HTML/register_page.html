@@ -51,9 +51,30 @@
       </div>
 
       <div class="form-group">
-        <label for="address">Address</label>
-        <input type="text" id="address" />
+        <label for="street">Street</label>
+        <input type="text" id="street" name="street" placeholder="Street" required />
       </div>
+      
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" placeholder="City" required />
+      </div>
+      
+      <div class="form-group">
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" placeholder="State" />
+      </div>
+      
+      <div class="form-group">
+        <label for="postalCode">Postal Code</label>
+        <input type="text" id="postalCode" name="postalCode" placeholder="Postal Code" />
+      </div>
+      
+      <div class="form-group">
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" placeholder="Country" required />
+      </div>
+      
 
       <div class="form-group">
         <label for="userType">Register As <span class="required">*</span></label>
@@ -66,7 +87,7 @@
 
       <div class="form-group">
         <label>
-          <input type="checkbox" id="dataConsent" required />
+          <input type="checkbox" id="dataConsent"/>
           I consent to the use of my data to improve location-based services.
         </label>
       </div>

@@ -18,8 +18,14 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     email: document.getElementById('email').value.trim(),
     password: password,
     phoneNumber: document.getElementById('phoneNumber').value.trim(),
-    address: document.getElementById('address').value.trim(),
-    userType: document.getElementById('userType').value,
+    address: {
+      street: document.getElementById('street').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      state: document.getElementById('state').value.trim(),
+      postalCode: document.getElementById('postalCode').value.trim(),
+      country: document.getElementById('country').value.trim()
+    },
+        userType: document.getElementById('userType').value,
     dataConsent: document.getElementById('dataConsent').checked
   };
 
@@ -39,7 +45,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
       localStorage.setItem("firstName", data.firstName);
       localStorage.setItem("lastName", data.lastName);
       localStorage.setItem("phoneNumber", data.phoneNumber);
-      localStorage.setItem("address", data.address);
+      localStorage.setItem("address", JSON.stringify(data.address));
       localStorage.setItem("membership", "silver");
       localStorage.setItem("dataConsent", data.dataConsent);
 
