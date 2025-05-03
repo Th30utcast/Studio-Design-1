@@ -28,12 +28,20 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("pendingEmail", email);
         if (twoFASection) {
           twoFASection.style.display = "block";
-        }
-        else {
+        } else {
           console.warn("twoFASection not found in the DOM.");
         }
       } else if (res.ok && result.step === "success") {
         const user = result.user;
+
+        // ✅ Store the token if present
+        if (result.token) {
+          localStorage.setItem("token", result.token);
+        } else {
+          console.error("No token received from server");
+          alert("Login successful, but authentication token missing.");
+        }
+
         storeUserLocally(user);
         window.location.href = "mainlogged_page.html";
       } else {
@@ -65,6 +73,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (res.ok && result.step === "success") {
         localStorage.removeItem("pendingEmail");
+
+        // ✅ Store the token if present after 2FA
+        if (result.token) {
+          localStorage.setItem("token", result.token);
+        } else {
+          console.error("No token received from server after 2FA");
+          alert("2FA successful, but authentication token missing.");
+        }
+
         storeUserLocally(result.user);
         window.location.href = "mainlogged_page.html";
       } else {

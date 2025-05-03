@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 // === Multer Setup ===
 const storage = multer.diskStorage({
@@ -102,7 +102,6 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-
 // ================== VERIFY 2FA ==================
 router.post('/verify-2fa', async (req, res) => {
   try {
@@ -119,8 +118,22 @@ router.post('/verify-2fa', async (req, res) => {
     twoFATokens.delete(email);
     const user = await User.findOne({ email });
 
+    // ✅ Generate a fresh token now
+    const token = jwt.sign(
+      {
+        user: {
+          id: user._id,
+          email: user.email,
+          userType: user.userType
+        }
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
     return res.json({
       step: "success",
+      token,
       user: {
         _id: user._id,
         email: user.email,
