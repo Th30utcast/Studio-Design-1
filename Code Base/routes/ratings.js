@@ -14,12 +14,6 @@ router.post('/submit', auth, async (req, res) => {
       const userId = req.user.id.trim();
       const buyerId = req.body.buyer.trim();
   
-      console.log("Trimmed userId:", userId);
-      console.log("Trimmed buyerId:", buyerId);
-      console.log("Are they equal?:", userId === buyerId);
-      console.log("Type of userId:", typeof userId);
-      console.log("Type of buyerId:", typeof buyerId);
-  
       if (userId !== buyerId) {
         console.error("ID mismatch!");
         return res.status(403).json({ message: 'Not authorized to submit this rating' });
