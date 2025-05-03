@@ -1,0 +1,115 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  header {
+    background-color: #0C1E3D;
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  
+  nav a {
+    margin-left: 20px;
+    color: white;
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  .container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+  }
+  
+  h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #0C1E3D;
+  }
+  
+  .faq-item {
+    margin-bottom: 25px;
+  }
+  
+  .faq-item h3 {
+    color: #3a6ee8;
+    font-size: 18px;
+  }
+  
+  .faq-item p {
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  
+  form {
+    margin-top: 40px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  form h2 {
+    margin-bottom: 20px;
+    color: #0C1E3D;
+  }
+  
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 500;
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+  }
+  
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  button {
+    margin-top: 20px;
+    background-color: #3a6ee8;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #2f5ec1;
+  }
+  
+  footer {
+    margin-top: 60px;
+    background-color: #0C1E3D;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  
