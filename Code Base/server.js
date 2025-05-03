@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth');
 const listingRoutes = require('./routes/listings'); 
+const ratingRoutes = require('./routes/ratings');
 const path = require('path');
 
 dotenv.config();
@@ -13,6 +14,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // Serve static files
+app.use('/ratings', ratingRoutes);
 app.get('/', (req, res) => {
   res.redirect('/HTML/main_page.html');
 });

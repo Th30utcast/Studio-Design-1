@@ -29,7 +29,14 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         localStorage.setItem("lastName", result.lastName || "");
         localStorage.setItem("phoneNumber", result.phoneNumber || "");
         localStorage.setItem("address", result.address || "");
-  
+        
+        if (result.token) {
+          localStorage.setItem("token", result.token);
+        } else {
+          console.error("No token received from server");
+          alert("Login successful, but authentication token missing.");
+        }
+      
         window.location.href = 'mainlogged_page.html';
       } else {
         const message = await res.text();

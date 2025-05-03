@@ -4,6 +4,8 @@ const multer = require('multer');
 const path = require('path');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // Multer storage setup
 const storage = multer.diskStorage({
@@ -78,8 +80,23 @@ router.post('/login', async (req, res) => {
       return res.status(400).send("Invalid credentials.");
     }
 
+    // ✅ Generate JWT token
+    const token = jwt.sign(
+      { 
+        user: {
+          id: user._id,
+          email: user.email,
+          userType: user.userType
+        }
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // ✅ Send token along with user data
     res.status(200).json({
       message: "Login successful.",
+      token, // <-- This is what rate_seller.js needs!
       userId: user._id,
       userType: user.userType,
       email: user.email,
