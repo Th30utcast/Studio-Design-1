@@ -4,10 +4,7 @@ document.getElementById('listingForm').addEventListener('submit', async function
   const formData = new FormData(form);
 
   const sellerId = localStorage.getItem("userId");
-  if (!sellerId) {
-    alert("User not logged in. Please log in first.");
-    return;
-  }
+  const token = localStorage.getItem("token");
 
   formData.append("sellerId", sellerId);
 
@@ -24,6 +21,9 @@ document.getElementById('listingForm').addEventListener('submit', async function
   try {
     const res = await fetch('/api/listings/add', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
       body: formData
     });
 

@@ -86,7 +86,18 @@ router.post('/login', async (req, res) => {
     // ✅ Send token along with user data
       return res.json({ step: "2fa-required" });
     }
-
+    
+    const token = jwt.sign(
+      { 
+        user: {
+          id: user._id,
+          email: user.email,
+          userType: user.userType
+        }
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
     return res.json({
       step: "success",
       token, // <-- This is what rate_seller.js needs!

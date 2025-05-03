@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const Listing = require('../models/Listing');
+const verifyToken = require('../middleware/auth');
 
 // Configure Multer
 const storage = multer.diskStorage({
@@ -11,7 +13,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// GET /api/listings - with filters
+// ================== GET Listings with filters ==================
 router.get('/', async (req, res) => {
   try {
     const {
@@ -31,23 +33,18 @@ router.get('/', async (req, res) => {
 
     const filters = {};
 
-    // Seller-specific
     if (sellerId) filters.sellerId = sellerId;
-
-    // Location-based
     if (country) filters["location.country"] = new RegExp(country, 'i');
     if (state) filters["location.state"] = new RegExp(state, 'i');
     if (city) filters["location.city"] = new RegExp(city, 'i');
     if (postalCode) filters["location.postalCode"] = new RegExp(postalCode, 'i');
 
-    // Price
     if (minPrice || maxPrice) {
       filters.price = {};
       if (minPrice) filters.price.$gte = Number(minPrice);
       if (maxPrice) filters.price.$lte = Number(maxPrice);
     }
 
-    // Other filters
     if (bedrooms) filters.bedrooms = { $gte: Number(bedrooms) };
     if (listingType) filters.listingType = listingType;
     if (apartmentType) filters.apartmentType = apartmentType;
@@ -55,7 +52,6 @@ router.get('/', async (req, res) => {
 
     let listings = await Listing.find(filters).lean();
 
-    // If verified=true, filter by seller verification
     if (verified === "true") {
       const verifiedSellerIds = await User.find({ isVerified: true, userType: "seller" }).distinct('_id');
       listings = listings.filter(listing =>
@@ -70,7 +66,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET /api/listings/:id
+// ================== GET Single Listing ==================
 router.get('/:id', async (req, res) => {
   try {
     const listing = await Listing.findById(req.params.id);
@@ -82,11 +78,10 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/listings/add
-router.post('/add', upload.array('photos', 5), async (req, res) => {
+// ================== ADD Listing (Protected) ==================
+router.post('/add', verifyToken, upload.array('photos', 5), async (req, res) => {
   try {
     const {
-      sellerId,
       listingType,
       apartmentType,
       duration,
@@ -104,14 +99,29 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
       return res.status(400).json({ error: 'Invalid location format. Must be JSON.' });
     }
 
-    const user = await User.findById(sellerId);
-    if (!user || user.userType !== 'seller') {
+    const userId = req.user.id;
+    const userType = req.user.userType;
+
+    if (userType !== 'seller') {
       return res.status(403).json({ error: 'Only sellers can add listings.' });
     }
 
-    // Limit for Silver members
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      console.error("❌ Invalid ObjectId:", userId);
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+
+    const sellerObjectId = new mongoose.Types.ObjectId(userId);
+    console.log("🔍 Checking user:", sellerObjectId);
+
+    const user = await User.findById(sellerObjectId);
+    if (!user) {
+      console.error("❌ User not found for ID:", sellerObjectId);
+      return res.status(404).json({ error: 'Seller not found.' });
+    }
+
     if (user.membership !== 'gold') {
-      const count = await Listing.countDocuments({ sellerId });
+      const count = await Listing.countDocuments({ sellerId: sellerObjectId });
       if (count >= 3) {
         return res.status(400).json({ error: 'Listing limit reached for Silver members.' });
       }
@@ -120,7 +130,7 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
     const photoPaths = req.files.map(file => `/uploads/${file.filename}`);
 
     const newListing = new Listing({
-      sellerId,
+      sellerId: sellerObjectId,
       listingType,
       apartmentType,
       duration: listingType === "rent" ? duration : undefined,
@@ -140,7 +150,8 @@ router.post('/add', upload.array('photos', 5), async (req, res) => {
     res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
-// PUT /api/listings/:id - Update an existing listing
+
+// ================== UPDATE Listing ==================
 router.put('/:id', async (req, res) => {
   try {
     const listingId = req.params.id;
