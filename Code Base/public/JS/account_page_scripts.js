@@ -87,9 +87,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("phoneNumber").value = data.phoneNumber || "";
       localStorage.setItem("phoneNumber", data.phoneNumber || "");
 
-      document.getElementById("address").value = data.address || "";
-      localStorage.setItem("address", data.address || "");
-
+      if (data.address) {
+        document.getElementById("street").value = data.address.street || "";
+        document.getElementById("city").value = data.address.city || "";
+        document.getElementById("state").value = data.address.state || "";
+        document.getElementById("postalCode").value = data.address.postalCode || "";
+        document.getElementById("country").value = data.address.country || "";
+      }
+      
       document.getElementById("dataConsent").checked = data.dataConsent === true;
       localStorage.setItem("dataConsent", data.dataConsent);
 
@@ -101,60 +106,70 @@ document.addEventListener("DOMContentLoaded", async () => {
     statusText.textContent = "❌ Server error.";
   }
 
-  // Update Info
-  document.getElementById("updateInfoBtn").addEventListener("click", async () => {
-    const phoneNumber = document.getElementById("phoneNumber").value;
-    const address = document.getElementById("address").value;
-    const profilePicture = document.getElementById("profilePicture").files[0];
-    const dataConsent = document.getElementById("dataConsent").checked;
+// Update Info
+document.getElementById("updateInfoBtn").addEventListener("click", async () => {
+  const phoneNumber = document.getElementById("phoneNumber").value;
+  const address = {
+    street: document.getElementById("street").value,
+    city: document.getElementById("city").value,
+    state: document.getElementById("state").value,
+    postalCode: document.getElementById("postalCode").value,
+    country: document.getElementById("country").value
+  };
+  const profilePicture = document.getElementById("profilePicture").files[0];
+  const dataConsent = document.getElementById("dataConsent").checked;
 
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("phoneNumber", phoneNumber);
-    formData.append("address", address);
-    formData.append("dataConsent", dataConsent);
-    if (profilePicture) {
-      formData.append("profilePicture", profilePicture);
-    }
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("phoneNumber", phoneNumber);
+  formData.append("address", JSON.stringify(address));
+  formData.append("dataConsent", dataConsent);
+  if (profilePicture) {
+    formData.append("profilePicture", profilePicture);
+  }
 
-    try {
-      const res = await fetch("/api/auth/update-info", {
-        method: "POST",
-        body: formData
-      });
+  try {
+    const res = await fetch("/api/auth/update-info", {
+      method: "POST",
+      body: formData
+    });
 
-      if (res.ok) {
-        alert("Your information has been updated.");
+    if (res.ok) {
+      alert("Your information has been updated.");
 
-        const refreshed = await fetch(`/api/auth/account?email=${email}`);
-        const updated = await refreshed.json();
+      const refreshed = await fetch(`/api/auth/account?email=${email}`);
+      const updated = await refreshed.json();
 
-        document.getElementById("phoneNumber").value = updated.phoneNumber || "";
-        document.getElementById("address").value = updated.address || "";
-        document.getElementById("dataConsent").checked = updated.dataConsent === true;
+      document.getElementById("phoneNumber").value = updated.phoneNumber || "";
 
-        if (updated.photo) {
-          document.getElementById("profilePreview").src = updated.photo;
-        }
+      if (updated.address) {
+        document.getElementById("street").value = updated.address.street || "";
+        document.getElementById("city").value = updated.address.city || "";
+        document.getElementById("state").value = updated.address.state || "";
+        document.getElementById("postalCode").value = updated.address.postalCode || "";
+        document.getElementById("country").value = updated.address.country || "";
 
-        // Update localStorage
-        localStorage.setItem("phoneNumber", updated.phoneNumber || "");
-        localStorage.setItem("address", updated.address || "");
-        localStorage.setItem("dataConsent", updated.dataConsent);
-        if (updated.photo) {
-          localStorage.setItem("photo", updated.photo);
-        }
-
-      } else {
-        const msg = await res.text();
-        alert("❌ Failed to update information.\n" + msg);
+        localStorage.setItem("address", JSON.stringify(updated.address));
       }
 
-    } catch (err) {
-      console.error(err);
-      alert("❌ Something went wrong while sending the update.");
+      document.getElementById("dataConsent").checked = updated.dataConsent === true;
+      localStorage.setItem("dataConsent", updated.dataConsent);
+
+      if (updated.photo) {
+        document.getElementById("profilePreview").src = updated.photo;
+        localStorage.setItem("photo", updated.photo);
+      }
+
+    } else {
+      const msg = await res.text();
+      alert("❌ Failed to update information.\n" + msg);
     }
-  });
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Something went wrong while sending the update.");
+  }
+});
 
   // Remove Photo
   document.getElementById("removePhotoBtn").addEventListener("click", async () => {

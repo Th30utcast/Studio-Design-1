@@ -216,20 +216,33 @@ router.post('/upgrade-membership', async (req, res) => {
 // ================== UPDATE USER INFO ==================
 router.post('/update-info', upload.single('profilePicture'), async (req, res) => {
   try {
-    const { email, phoneNumber, address, dataConsent } = req.body;
+    const { email, phoneNumber, dataConsent } = req.body;
+
     if (!email) return res.status(400).send("Missing email.");
 
     const updateFields = {};
+
+    // Address needs special handling: parse JSON string manually
+    if (req.body.address) {
+      try {
+        updateFields.address = JSON.parse(req.body.address);
+      } catch (err) {
+        return res.status(400).send("Invalid address JSON.");
+      }
+    }
+
     if (phoneNumber !== undefined) updateFields.phoneNumber = phoneNumber;
-    if (address !== undefined) updateFields.address = address;
+
     if (dataConsent !== undefined) {
       updateFields.dataConsent = dataConsent === 'true' || dataConsent === true;
     }
+
     if (req.file) {
       updateFields.photo = `/uploads/${req.file.filename}`;
     }
 
     const result = await User.updateOne({ email }, { $set: updateFields });
+
     if (result.modifiedCount === 0) {
       return res.status(404).send("No user updated.");
     }
@@ -240,6 +253,7 @@ router.post('/update-info', upload.single('profilePicture'), async (req, res) =>
     res.status(500).send("Server error.");
   }
 });
+
 
 // ================== REMOVE PROFILE PHOTO ==================
 router.post('/remove-photo', async (req, res) => {
