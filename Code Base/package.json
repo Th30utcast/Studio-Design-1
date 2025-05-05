@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.9.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
@@ -20,6 +21,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
-    "multer": "^1.4.5-lts.2"
+    "multer": "^1.4.5-lts.2",
+    "prompt-sync": "^4.2.0"
   }
 }
