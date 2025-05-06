@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         verificationForm.style.display = "block";
       }
 
-      // Membership display and actions
+
       if (data.membership) {
         const membershipInput = document.getElementById("membership");
         const subscriptionBox = document.getElementById("subscriptionInfo");
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       }
 
-      // Set profile image and fields
+
       if (data.photo) {
         document.getElementById("profilePreview").src = data.photo;
         localStorage.setItem("photo", data.photo);
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     statusText.textContent = "❌ Server error.";
   }
 
-// Update Info
+
 document.getElementById("updateInfoBtn").addEventListener("click", async () => {
   const phoneNumber = document.getElementById("phoneNumber").value;
   const address = {
@@ -171,7 +171,7 @@ document.getElementById("updateInfoBtn").addEventListener("click", async () => {
   }
 });
 
-  // Remove Photo
+
   document.getElementById("removePhotoBtn").addEventListener("click", async () => {
     if (!email) return alert("You must be logged in.");
 
@@ -196,7 +196,7 @@ document.getElementById("updateInfoBtn").addEventListener("click", async () => {
     }
   });
 
-  // Verification Upload
+
   document.getElementById("verificationForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 

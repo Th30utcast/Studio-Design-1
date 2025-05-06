@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // === In-memory 2FA storage ===
-const twoFATokens = new Map(); // { email -> { code, expiresAt } }
+const twoFATokens = new Map(); 
 
 // ================== REGISTER ==================
 router.post('/register', async (req, res) => {
@@ -63,14 +63,13 @@ router.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(401).json({ error: "Incorrect password" });
 
-    // If user has phone number → require 2FA
     if (user.phoneNumber) {
       const code = Math.floor(100000 + Math.random() * 900000).toString();
       const expiresAt = Date.now() + 5 * 60 * 1000;
       twoFATokens.set(email, { code, expiresAt });
 
       console.log(`📲 2FA code for ${email}: ${code}`);
-    // ✅ Generate JWT token
+
     const token = jwt.sign(
       { 
         user: {
@@ -83,7 +82,6 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // ✅ Send token along with user data
       return res.json({ step: "2fa-required" });
     }
     
@@ -100,7 +98,7 @@ router.post('/login', async (req, res) => {
     );
     return res.json({
       step: "success",
-      token, // <-- This is what rate_seller.js needs!
+      token, 
       user: {
         _id: user._id,
         email: user.email,
@@ -129,7 +127,7 @@ router.post('/verify-2fa', async (req, res) => {
     twoFATokens.delete(email);
     const user = await User.findOne({ email });
 
-    // ✅ Generate a fresh token now
+
     const token = jwt.sign(
       {
         user: {
@@ -222,7 +220,7 @@ router.post('/update-info', upload.single('profilePicture'), async (req, res) =>
 
     const updateFields = {};
 
-    // Address needs special handling: parse JSON string manually
+
     if (req.body.address) {
       try {
         updateFields.address = JSON.parse(req.body.address);

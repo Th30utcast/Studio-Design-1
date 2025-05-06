@@ -15,7 +15,7 @@ async function testRegister(userData, testName = '') {
   if (testName) console.log(`\n[${testName}]`);
   console.log(`Testing registration for: ${userData.email}`);
 
-  // Client-side validation
+
   if (userData.password !== userData.confirmPassword) {
     console.log('❌ FAILED: Passwords do not match (client-side validation)');
     return;
@@ -53,7 +53,7 @@ async function testRegister(userData, testName = '') {
 }
 
 (async () => {
-  // 1. Test password mismatch (client-side)
+
   await testRegister({
     firstName: "Test",
     lastName: "User",
@@ -72,7 +72,7 @@ async function testRegister(userData, testName = '') {
     dataConsent: true
   }, "Password Mismatch Test");
 
-  // 2. Test successful registration with random email
+
   const randomEmail = `testuser${Math.floor(Math.random() * 10000)}@example.com`;
   await testRegister({
     firstName: "Test",
@@ -92,11 +92,11 @@ async function testRegister(userData, testName = '') {
     dataConsent: true
   }, "Successful Registration Test");
 
-  // 3. Test duplicate registration
+
   await testRegister({
     firstName: "Duplicate",
     lastName: "Email",
-    email: randomEmail, // Same as above
+    email: randomEmail, 
     password: "anotherPassword",
     confirmPassword: "anotherPassword",
     phoneNumber: "9876543210",
@@ -111,13 +111,13 @@ async function testRegister(userData, testName = '') {
     dataConsent: false
   }, "Duplicate Email Test");
 
-  // 4. Test incomplete data
+
   await testRegister({
     firstName: "Incomplete",
     email: "incomplete@example.com",
     password: "test123",
     confirmPassword: "test123",
-    // Missing lastName, phoneNumber, address
+
     userType: "buyer",
     dataConsent: true
   }, "Incomplete Data Test");

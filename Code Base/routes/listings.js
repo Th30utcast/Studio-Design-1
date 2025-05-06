@@ -6,7 +6,7 @@ const User = require('../models/User');
 const Listing = require('../models/Listing');
 const verifyToken = require('../middleware/auth');
 
-// Configure Multer
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'public/uploads/'),
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)

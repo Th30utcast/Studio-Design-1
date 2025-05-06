@@ -11,18 +11,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("form").addEventListener("submit", function (e) {
       e.preventDefault();
   
-      // Fetch and clean input values
+
       const cardNumber = document.getElementById("cardNumber").value.replace(/\s/g, '');
       const expiry = document.getElementById("expiry").value.trim();
       const cvv = document.getElementById("cvv").value.trim();
-  
-      // Validate Card Number
+
       if (!/^\d{16}$/.test(cardNumber)) {
         alert("❌ Card number must be 16 digits.");
         return;
       }
   
-      // Validate Expiry Date
+ 
       if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
         alert("❌ Expiry must be in MM/YY format.");
         return;
@@ -36,13 +35,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
   
-      // Validate CVV
+
       if (!/^\d{3}$/.test(cvv)) {
         alert("❌ CVV must be 3 digits.");
         return;
       }
   
-      // Show loading
+
       document.getElementById("loadingOverlay").style.display = "flex";
   
       setTimeout(async () => {

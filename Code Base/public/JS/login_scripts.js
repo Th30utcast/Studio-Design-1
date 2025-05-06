@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (res.ok && result.step === "success") {
         const user = result.user;
 
-        // ✅ Store the token if present
+
         if (result.token) {
           localStorage.setItem("token", result.token);
         } else {
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (res.ok && result.step === "success") {
         localStorage.removeItem("pendingEmail");
 
-        // ✅ Store the token if present after 2FA
+
         if (result.token) {
           localStorage.setItem("token", result.token);
         } else {

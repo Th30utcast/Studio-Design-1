@@ -39,7 +39,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     });
 
     if (res.ok) {
-      // Store info in localStorage
+
       localStorage.setItem("email", data.email);
       localStorage.setItem("userType", data.userType);
       localStorage.setItem("firstName", data.firstName);

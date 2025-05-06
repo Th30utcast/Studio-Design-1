@@ -10,7 +10,7 @@ function loadTranslations() {
       if (el.tagName === 'INPUT' && el.placeholder) {
         el.placeholder = text;
       } else if (el.tagName === 'OPTION' && el.value) {
-        // Don't override <option> values
+
       } else {
         el.textContent = text;
       }

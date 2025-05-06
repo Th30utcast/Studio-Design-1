@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     submitBtn.disabled = true;
     btnText.innerHTML = '<span class="loading"></span> Scheduling...';
     
-    // Show loading overlay
+
     document.getElementById("loadingOverlay").style.display = "flex";
 
     try {
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
       showAlert('error', 'Failed to schedule viewing. Please try again.');
       console.error('Error:', error);
     } finally {
-      // Hide loading overlay
+
       document.getElementById("loadingOverlay").style.display = "none";
       submitBtn.disabled = false;
       btnText.textContent = 'Schedule Viewing';
@@ -51,17 +51,17 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!res.ok) throw new Error("Listing not found");
       const listing = await res.json();
   
-      // Debug the listing object to see its structure
+  
       console.log("Raw listing data:", JSON.stringify(listing));
       
-      // Handle each property individually and ensure they're properly stringified
+
       
-      // Fix for location - this appears to be the main issue
+
       let locationText = "Unknown Location";
       if (listing.location) {
-        // Check if location is an object or a string
+
         if (typeof listing.location === 'object') {
-          // If it's an object, try to extract useful information
+
           if (listing.location.address) {
             locationText = listing.location.address;
           } else if (listing.location.city) {
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
           } else if (listing.location.toString && listing.location.toString() !== '[object Object]') {
             locationText = listing.location.toString();
           } else {
-            // If we can't extract anything useful, use any available location info
+
             const locationProps = Object.keys(listing.location);
             if (locationProps.length > 0) {
               const firstProp = locationProps[0];
@@ -79,26 +79,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
         } else if (typeof listing.location === 'string') {
-          // If it's already a string, use it directly
+
           locationText = listing.location;
         }
       }
       
-      // Ensure other properties are properly handled
+
       const price = listing.price ? `€${Number(listing.price).toLocaleString()}` : 'Price on request';
       const bedrooms = typeof listing.bedrooms === 'number' ? listing.bedrooms : (listing.bedrooms || '?');
       const bathrooms = typeof listing.bathrooms === 'number' ? listing.bathrooms : (listing.bathrooms || '?');
       const apartmentType = typeof listing.apartmentType === 'string' ? listing.apartmentType : 'Property';
       const description = typeof listing.description === 'string' ? listing.description : 'No description available';
   
-      // Set text content with proper string values
+
       document.getElementById('propertyLocation').textContent = locationText;
       document.getElementById('propertyPrice').textContent = price;
       document.getElementById('propertyDetails').textContent = `${bedrooms} Bedrooms | ${bathrooms} Bathrooms`;
       document.getElementById('propertyType').textContent = apartmentType;
       document.getElementById('propertyDescription').textContent = description;
       
-      // For debugging
+
       console.log("Processed listing data:", {
         location: locationText, 
         price, 

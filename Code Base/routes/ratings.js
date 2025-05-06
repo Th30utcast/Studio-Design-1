@@ -30,7 +30,7 @@ router.post('/submit', auth, async (req, res) => {
         return res.status(500).json({ message: 'Database error', error: dbError.message });
       }
   
-      // ✅ Use correct field names: buyer, seller, listing
+ 
       const existingRating = await Rating.findOne({
         buyer: req.body.buyer,
         seller: req.body.seller,
@@ -61,13 +61,13 @@ router.post('/submit', auth, async (req, res) => {
     }
   });
 
-// Get ratings for a seller
+
 router.get('/seller/:sellerId', async (req, res) => {
   try {
     const ratings = await Rating.find({ sellerId: req.params.sellerId })
-      .sort({ createdAt: -1 }); // Most recent first
+      .sort({ createdAt: -1 }); 
     
-    // Calculate average rating
+
     const averageRating = await Rating.getAverageRating(req.params.sellerId);
     
     res.status(200).json({
@@ -81,7 +81,7 @@ router.get('/seller/:sellerId', async (req, res) => {
   }
 });
 
-// Get a specific rating by ID
+
 router.get('/:id', async (req, res) => {
   try {
     const rating = await Rating.findById(req.params.id);
@@ -97,7 +97,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Delete a rating (only by the user who created it)
+
 router.delete('/:id', auth, async (req, res) => {
   try {
     const rating = await Rating.findById(req.params.id);
@@ -106,7 +106,7 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'Rating not found' });
     }
     
-    // Check if the user is authorized to delete this rating
+
     if (rating.buyerId.toString() !== req.user.id) {
       return res.status(403).json({ message: 'Not authorized to delete this rating' });
     }

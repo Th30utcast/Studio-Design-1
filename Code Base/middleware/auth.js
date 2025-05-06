@@ -7,7 +7,7 @@ module.exports = function(req, res, next) {
                   req.headers.authorization?.split(' ')[1] || 
                   req.cookies?.token;
   
-    console.log("Token received:", token); // 👈 Add this
+    console.log("Token received:", token);
   
     if (!token) {
       return res.status(401).json({ message: 'Authentication required' });
@@ -15,11 +15,11 @@ module.exports = function(req, res, next) {
   
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("Decoded token:", decoded); // 👈 Add this
+      console.log("Decoded token:", decoded);
       req.user = decoded.user;
       next();
     } catch (err) {
-      console.error("Token verification error:", err); // 👈 Already exists
+      console.error("Token verification error:", err);
       return res.status(401).json({ message: 'Invalid or expired token' });
     }
   };

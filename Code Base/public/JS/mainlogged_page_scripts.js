@@ -119,20 +119,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const dropdownMenu = document.getElementById("dropdownMenu");
   const addListingItem = document.getElementById("addListingMenuItem");
 
-  // Show Add Listings only if user is a seller
+
   if (userType === "seller" && addListingItem) {
     addListingItem.style.display = "block";
   }
 
-  // Toggle dropdown on icon click
+
   if (menuToggle && dropdownMenu) {
     menuToggle.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent immediate close
+      e.stopPropagation(); 
       const isVisible = dropdownMenu.style.display === "flex";
       dropdownMenu.style.display = isVisible ? "none" : "flex";
     });
 
-    // Close dropdown if clicked outside
+
     document.addEventListener("click", (e) => {
       if (!dropdownMenu.contains(e.target) && e.target !== menuToggle) {
         dropdownMenu.style.display = "none";
@@ -143,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-  // Search button behavior
+
   const searchButton = document.getElementById("searchButton");
   if (searchButton) {
     searchButton.addEventListener("click", () => {

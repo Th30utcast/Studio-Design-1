@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const readline = require('readline');
 
-// Utility to prompt user input from terminal
+
 const prompt = (query) => new Promise((resolve) => {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   rl.question(query, (answer) => {

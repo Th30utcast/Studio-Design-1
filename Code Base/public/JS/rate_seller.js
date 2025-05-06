@@ -4,10 +4,10 @@ function getUrlParam(param) {
   }
   
   document.addEventListener('DOMContentLoaded', function () {
-    // Debug: Verify script loaded
+
     console.log("Rating script loaded!");
   
-    // Get token from localStorage
+
     const token = localStorage.getItem('token');
   
     if (!token) {
@@ -16,7 +16,7 @@ function getUrlParam(param) {
       return;
     }
   
-    // Decode token to get buyerId
+
     let buyerId;
   
     try {
@@ -29,14 +29,14 @@ function getUrlParam(param) {
       return;
     }
   
-    // Get sellerId and listingId
+
     const sellerId = sessionStorage.getItem('sellerId') || getUrlParam('sellerId');
     const listingId = sessionStorage.getItem('listingId') || getUrlParam('listingId');
   
-    // Debug: Check IDs
+
     console.log("Loaded IDs:", { buyerId, sellerId, listingId });
   
-    // Set hidden field values
+
     document.getElementById('buyerId').value = buyerId;
     document.getElementById('sellerId').value = sellerId;
     document.getElementById('listingId').value = listingId;
@@ -47,16 +47,16 @@ function getUrlParam(param) {
     ratingForm.addEventListener('submit', async function (e) {
       e.preventDefault();
   
-      // Validate form
+
       if (!validateForm(ratingForm)) return;
   
-      // UI Loading state
+
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="loading"></span> Submitting...';
       document.getElementById("loadingOverlay").style.display = "flex";
   
       try {
-        // REAL API CALL IMPLEMENTATION
+
         const response = await fetch('/ratings/submit', {
           method: 'POST',
           headers: {
@@ -72,13 +72,13 @@ function getUrlParam(param) {
           })
         });
   
-        // Handle non-2xx responses
+
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Rating submission failed');
         }
   
-        // Success handling
+
         showAlert('success', 'Rating submitted successfully!');
         sessionStorage.removeItem('buyerId');
         sessionStorage.removeItem('sellerId');
@@ -105,7 +105,7 @@ function getUrlParam(param) {
       document.getElementById("loadingOverlay").style.display = "none";
     }
   
-    // Form validation
+
     function validateForm(form) {
       if (!form.querySelector('input[name="rating"]:checked')) {
         showAlert('error', 'Please select a star rating');
@@ -114,7 +114,7 @@ function getUrlParam(param) {
       return true;
     }
   
-    // Alert notification
+
     function showAlert(type, message) {
       const alertDiv = document.createElement('div');
       alertDiv.className = `alert alert-${type}`;

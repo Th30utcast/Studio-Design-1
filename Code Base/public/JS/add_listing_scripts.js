@@ -8,7 +8,6 @@ document.getElementById('listingForm').addEventListener('submit', async function
 
   formData.append("sellerId", sellerId);
 
-  // Construct location object
   const location = {
     street: form.street.value,
     city: form.city.value,
