@@ -17,7 +17,7 @@ async function testRegister(userData, testName = '') {
 
 
   if (userData.password !== userData.confirmPassword) {
-    console.log('❌ FAILED: Passwords do not match (client-side validation)');
+    console.log('FAILED: Passwords do not match (client-side validation)');
     return;
   }
 
@@ -40,15 +40,15 @@ async function testRegister(userData, testName = '') {
     }
 
     if (!res.ok) {
-      console.log(`❌ FAILED: ${result}`);
+      console.log(`FAILED: ${result}`);
       return;
     }
 
-    console.log(`✅ SUCCESS: Registered user ${userData.email}`);
+    console.log(` SUCCESS: Registered user ${userData.email}`);
     console.log("Server response:", result);
 
   } catch (err) {
-    console.error(`❌ FAILED: Network error -> ${err.message}`);
+    console.error(`FAILED: Network error -> ${err.message}`);
   }
 }
 

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const verificationForm = document.getElementById("verificationForm");
 
   if (!email) {
-    statusText.textContent = "⚠️ No email found. Please log in.";
+    statusText.textContent = " No email found. Please log in.";
     return;
   }
 
@@ -21,9 +21,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (res.ok) {
       if (data.isVerified) {
-        statusText.textContent = "✅ Your account is verified.";
+        statusText.textContent = " Your account is verified.";
       } else {
-        statusText.textContent = "❌ Your account is not verified.";
+        statusText.textContent = " Your account is not verified.";
         verificationForm.style.display = "block";
       }
 
@@ -58,16 +58,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                   });
 
                   if (downgrade.ok) {
-                    alert("✅ Downgraded to Silver.");
+                    alert(" Downgraded to Silver.");
                     localStorage.setItem("membership", "silver");
                     window.location.reload();
                   } else {
                     const msg = await downgrade.text();
-                    alert("❌ Failed to downgrade.\n" + msg);
+                    alert(" Failed to downgrade.\n" + msg);
                   }
                 } catch (err) {
                   console.error("Downgrade error:", err);
-                  alert("❌ Error while downgrading.");
+                  alert(" Error while downgrading.");
                 }
 
               } else {
@@ -99,11 +99,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       localStorage.setItem("dataConsent", data.dataConsent);
 
     } else {
-      statusText.textContent = "⚠️ Could not check verification status.";
+      statusText.textContent = "Could not check verification status.";
     }
   } catch (err) {
     console.error(err);
-    statusText.textContent = "❌ Server error.";
+    statusText.textContent = " Server error.";
   }
 
 
@@ -162,12 +162,12 @@ document.getElementById("updateInfoBtn").addEventListener("click", async () => {
 
     } else {
       const msg = await res.text();
-      alert("❌ Failed to update information.\n" + msg);
+      alert(" Failed to update information.\n" + msg);
     }
 
   } catch (err) {
     console.error(err);
-    alert("❌ Something went wrong while sending the update.");
+    alert(" Something went wrong while sending the update.");
   }
 });
 
@@ -211,16 +211,16 @@ document.getElementById("updateInfoBtn").addEventListener("click", async () => {
       });
 
       if (res.ok) {
-        alert("✅ Document uploaded. You're now verified!");
-        document.getElementById("verification-status").textContent = "✅ Your account is verified.";
+        alert(" Document uploaded. You're now verified!");
+        document.getElementById("verification-status").textContent = " Your account is verified.";
         document.getElementById("verificationForm").style.display = "none";
       } else {
         const msg = await res.text();
-        alert("❌ Error: " + msg);
+        alert(" Error: " + msg);
       }
     } catch (err) {
       console.error(err);
-      alert("❌ Upload failed.");
+      alert(" Upload failed.");
     }
   });
 });

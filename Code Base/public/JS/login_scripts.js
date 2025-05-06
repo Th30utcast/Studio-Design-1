@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
         storeUserLocally(result.user);
         window.location.href = "mainlogged_page.html";
       } else {
-        alert("❌ Invalid or expired code.");
+        alert("Invalid or expired code.");
       }
     } catch (err) {
       console.error("2FA verification error:", err);

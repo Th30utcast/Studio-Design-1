@@ -107,7 +107,7 @@ router.post('/add', verifyToken, upload.array('photos', 5), async (req, res) => 
     }
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      console.error("❌ Invalid ObjectId:", userId);
+      console.error(" Invalid ObjectId:", userId);
       return res.status(400).json({ error: "Invalid user ID" });
     }
 
@@ -116,7 +116,7 @@ router.post('/add', verifyToken, upload.array('photos', 5), async (req, res) => 
 
     const user = await User.findById(sellerObjectId);
     if (!user) {
-      console.error("❌ User not found for ID:", sellerObjectId);
+      console.error(" User not found for ID:", sellerObjectId);
       return res.status(404).json({ error: 'Seller not found.' });
     }
 

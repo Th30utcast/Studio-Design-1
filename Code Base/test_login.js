@@ -26,7 +26,7 @@ async function testLogin(email, password) {
 
 
     if (!res.ok) {
-      console.log(`❌ FAILED: ${result.error || 'Unknown error'}`);
+      console.log(`FAILED: ${result.error || 'Unknown error'}`);
       return;
     }
 
@@ -42,26 +42,26 @@ async function testLogin(email, password) {
 
       const verifyResult = await verifyRes.json();
       if (!verifyRes.ok) {
-        console.error(`❌ FAILED: ${verifyResult.error || 'Unable to verify 2FA code'}`);
+        console.error(`FAILED: ${verifyResult.error || 'Unable to verify 2FA code'}`);
         return;
       }
 
       if (verifyResult.step === 'success') {
-        console.log(`✅ SUCCESS: Logged in as ${verifyResult.user.email}`);
+        console.log(`SUCCESS: Logged in as ${verifyResult.user.email}`);
         console.log("Raw server response:", verifyResult);
       } else {
-        console.log(`❌ FAILED: 2FA failed - ${verifyResult.error || 'Unexpected error'}`);
+        console.log(`FAILED: 2FA failed - ${verifyResult.error || 'Unexpected error'}`);
       }
 
     } else if (result.step === "success") {
-      console.log(`✅ SUCCESS: Logged in as ${result.user.email}`);
+      console.log(` SUCCESS: Logged in as ${result.user.email}`);
     console.log("Raw server response:", result);
     } else {
-      console.log("❌ FAILED: Unknown response from server.");
+      console.log(" FAILED: Unknown response from server.");
     }
 
   } catch (err) {
-    console.error(`❌ FAILED: Network or server error -> ${err.message}`);
+    console.error(`FAILED: Network or server error -> ${err.message}`);
   }
 }
 
