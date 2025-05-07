@@ -1,0 +1,96 @@
+[{
+  "_id": {
+    "$oid": "681b3edefb519832a1fc5624"
+  },
+  "firstName": "Ayman",
+  "lastName": "Kandouli",
+  "phoneNumber": "+41763607077",
+  "address": {
+    "street": "Industriestrasse 59",
+    "city": "Plagwitz",
+    "state": "Leipzig",
+    "postalCode": "04229",
+    "country": "Germany"
+  },
+  "email": "ayman.kandouli@example.com",
+  "password": "$2b$10$SeMrzAwz5jRaKdm5/ONI5eFLpbaMaf1L6ysKbmUQ1IkuJb1g/3deO",
+  "userType": "seller",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3f2dfb519832a1fc562a"
+  },
+  "firstName": "Saeed",
+  "lastName": "Kabak",
+  "phoneNumber": "+495209425450",
+  "address": {
+    "street": "Kurt-Schumacher-Straße 50",
+    "city": "Hbf",
+    "state": "Leipzig",
+    "postalCode": "04105",
+    "country": "Germany"
+  },
+  "email": "Saeed.Kabak@example.com",
+  "password": "$2b$10$DKmF0IDgsc9VAT.wyNsM.u8SNkPbX2G10Up5Xik09SauDgWszss7O",
+  "userType": "buyer",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3f8bfb519832a1fc5630"
+  },
+  "firstName": "Anastasios",
+  "lastName": "Dorotheou",
+  "phoneNumber": "+35797745958",
+  "address": {
+    "street": "Kurt-Schumacher-Straße 50",
+    "city": "Hbf",
+    "state": "Leipzig",
+    "postalCode": "04105",
+    "country": "Germany"
+  },
+  "email": "Anastasios.Dorotheou@example.com",
+  "password": "$2b$10$tSArgMvE7rOTI1BytGZK5O2xiv02b5sowlPcQLk7m7E1RA7xSjbzS",
+  "userType": "buyer",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "681b3fd5fb519832a1fc5636"
+  },
+  "firstName": "Sherifa",
+  "lastName": "Bakr",
+  "phoneNumber": "+201018088968",
+  "address": {
+    "street": "Kurt-Schumacher-Straße 50",
+    "city": "Hbf",
+    "state": "Leipzig",
+    "postalCode": "04105",
+    "country": "Germany"
+  },
+  "email": "Sherifa.Bakr@example.com",
+  "password": "$2b$10$e36HDkNwulJzTCu2h/WeLuiEBQTDBM2ZFOllBxxO8s2i2m9I9LEtm",
+  "userType": "buyer",
+  "membership": "silver",
+  "isVerified": false,
+  "photo": "/uploads/default-profile.png",
+  "dataConsent": true,
+  "loginAttempts": [],
+  "__v": 0
+}]
