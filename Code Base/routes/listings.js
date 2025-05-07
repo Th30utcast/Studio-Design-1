@@ -185,4 +185,26 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+// ================== DELETE Listing (Protected) ==================
+router.delete('/:id', verifyToken, async (req, res) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+      return res.status(404).json({ message: 'Listing not found.' });
+    }
+
+    // ensure only the owner can delete
+    if (listing.sellerId.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Not authorized to delete this listing.' });
+    }
+
+    await listing.deleteOne();
+    res.status(200).json({ message: 'Listing deleted.' });
+  } catch (err) {
+    console.error("DELETE /api/listings/:id error:", err);
+    res.status(500).json({ message: 'Server error.' });
+  }
+});
+
+
 module.exports = router;

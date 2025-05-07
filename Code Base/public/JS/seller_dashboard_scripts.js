@@ -42,28 +42,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   function editListing(id) {
     window.location.href = `edit_listing.html?id=${id}`;
   }
-  
   async function deleteListing(id, button) {
-    if (!confirm("Are you sure you want to delete this listing?")) return;
-  
-    button.disabled = true;
-  
-    try {
-      const res = await fetch(`/api/listings/${id}`, {
-        method: "DELETE"
-      });
-  
-      if (res.ok) {
-        alert("Listing deleted.");
-        button.closest(".card").remove();
-      } else {
-        alert("Failed to delete listing.");
+  if (!confirm("Are you sure you want to delete this listing?")) return;
+  button.disabled = true;
+
+  const token = localStorage.getItem("token");  // whatever key you use
+
+  try {
+    const res = await fetch(`/api/listings/${id}`, {
+      method: "DELETE",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
-    } catch (err) {
-      console.error(err);
-      alert("Error deleting listing.");
-    } finally {
-      button.disabled = false;
+    });
+    const data = await res.json();
+
+    if (res.ok) {
+      alert(data.message || "Listing deleted.");
+      button.closest(".card")?.remove();
+    } else {
+      alert(data.message || "Failed to delete listing.");
     }
+  } catch (err) {
+    console.error("Error deleting listing:", err);
+    alert("Error deleting listing.");
+  } finally {
+    button.disabled = false;
   }
-  
+}
